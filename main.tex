@@ -28,7 +28,7 @@
 
 
 \usepackage{fontspec}
-\setmonofont{IBM Plex Mono}
+\setmonofont{Iosevka NF}
 
 \lstdefinestyle{mystyle}{
 	backgroundcolor=\color{backcolour},   
@@ -46,7 +46,9 @@
 	showspaces=false,                
 	showstringspaces=false,
 	showtabs=false,                  
-	tabsize=2
+	tabsize=2,
+    % lineskip={-1pt},
+    % columns=fullflexible
 }
 
 \lstset{style=mystyle}
@@ -78,10 +80,29 @@
 
 \maketitle
 
+\section*{Inleiding}
+Kwantitatieve risicoanalyse is een parapluterm voor een verscheidenheid aan technieken die gebruikt worden om potentiële verliezen te kwantificieren, voornamelijk in een actuariële of financiële context. Men kan zich een verzekeraar of bank inbeelden, die polissen afsluit of leningen aangaat, met daaraan geassocieerd een bepaald `risico' om een verlies te moeten incasseren: dit komt voor als de polishouder een schadeclaim indient, of als de lener de lening niet terug kan betalen. In het algemeen is een verzekeraar niet zozeer geïnteresseerd in individuele risico's, maar eerder in hun aggregaat, i.e. de som van alle individuele risico's voor alle polishouders. Het is immers precies dit totale risico dat bepaalt hoeveel reservekapitaal de verzekeraar moet bezitten, teneinde de verwachte claims terug te kunnen betalen (dit bedrag heet ook wel het \textit{technische reservekapitaal}).
+
+Als we $n$ klanten hebben, ieder met een geassocieerde stochastische variabele $X_i$ (met $i \in \{1, ..., n\}$) die het risico van die klant beduidt, noteren we het geaggregeerde risico met $S = \sum_{i=1}^n X_i$. Als we eigenschappen over $S$ willen afleiden, is het wiskundig gesproken het eenvoudigst als alle $X_i$'s onafhankelijk zijn. In de praktijk is dit zelden tot nooit het geval: als er bijvoorbeeld in een wijk een huisinbraak voorkomt, kan dit een goede indicatie zijn dat nabijgelegen huizen in die wijk in de nabije toekomst ook bestolen zullen worden. We willen die afhankelijkheidsstructuur tussen de verschillende risico's dus modelleren op een wiskundig haalbare manier. Teneinde zo'n modellering te bewerkstelligen, introduceren we een bepaalde klasse verdelingsfuncties, \textit{copulae} geheten.
+
+In dit document zal onze focus liggen bij het specifieke geval waarbij de indiviuele risico's lognormaal verdeeld zijn (dat wil zeggen: de logaritmes van de risico's in kwestie zijn normaal verdeeld), en de copula tussen deze verliezen de zogeheten Gaussische copula is. Ons doel zal eruit bestaan een adequate benadering voor $S$ te vinden, als een gesloten uitdrukking. We zullen de rekentijden en accuraatheid van deze gesloten vorm dan vergelijken met die van de `primitievere' Monte Carlomethode.
+
+\subsection*{Algemene context}
+Doorheen dit verslag zullen we ons het perspectief van een verzekeringsmaatschappij. Het is natuurlijk de primaire interesse van dit bedrijf om winst te maken. In een ietwat vereenvoudigde visie kan dit enkel gebeuren als het kan garanderen dat de geldsom die door polishouders geclaimd wordt, de totale inkomsten niet overstijgt. Die totale inkomsten worden op hun beurt bepaald door de prijs van de polissen die het bedrijf afsluit (dit bedrag heet de \textit{verzekeringspremie}). Het kerndoel is dus om te bepalen hoeveel geld we ``opzij moeten houden'', om te claims te kunnen betalen die we verwachten binnen te krijgen. Veronderstel dat we $n$ polishouders hebben. Elk van die polishouders kan aan de hand van een stochastische variabele $X_i$ gemodelleerd worden, waarbij de waarde van die variabele voorstelt hoeveel geld deze polishouder claimt. Elk van deze variabelen noemen we een \textit{risico}. Wij zijn geïnteresseerd in het \textit{geaggregeerde risico}, aangeduid met $S$ en gedefinieerd als $\sum_{i=1}^n X_i$, en in het bijzonder in de verwachtingswaarde $\mathbb{E}[S]$. Immers, als de verzekeringsmaatschappij zich ervan vergewist steeds over deze geldsom te beschikken, verwachten we dat alle gemaakte claims uitbetaald kunnen worden. Dit totale risico heet het \textit{technische reservekapitaal}. 
+
+Onder de aanname dat alle claims onafhankelijk zijn (in de kansrekeningszin van het woord), is de berekening van deze verwachtingswaarde in de praktijk zeer eenvoudig, aangezien we eenvoudigweg de som van de individuele verwachtingswaarden kunnen nemen. Maar in de praktijk kunnen we zo'n aanname niet maken: bijvoorbeeld natuurrampen kunnen schade aanrichten in een groot gebied, waardoor er veel claims over huisvestingsschade tegelijkertijd binnen zullen komen.
+
+We zullen in dit verslag ook enkele risicomaten bespreken. In actuariële context is dit vooral relevant omdat financiële controleorganen bepaalde vereisten opleggen aan verzekeringsmaatschappijen omtrent een minimumkapitaal dat ze verplicht zijn te bezitten. Dit minimumkapitaal wordt berekend aan de hand van die zogeheten risicomaten. Er is echter een kost verbonden aan meer kapitaal verwerven (omwille van investeringsgerelateerde kwesties), dus is het voor een verzekeraar vaak een delicate balans. In het bijzonder wordt de zogeheten \textit{Value-at-Risk} gebruikt in wetgeving.
+
+\subsection*{Verwachtenutstheorie}
+Het klassieke raamwerk voor redeneringen over de rationaliteit van beslissingstheorie werd omstreeks de jaren '50 door John von Neumann en Oskar Morgenstern geopperd. Centraal in hun redenering is het concept van een \textit{nutsfunctie} $u: \mathbb{R} \to \mathbb{R}$ die de mate vat waarin de agent in kwestie het vergaren van een bepaalde hoeveelheid kapitaal waardeert, hoeveel `nut' die hoeveelheid kapitaal heeft. Von Neumann en Morgenstern poneren dat elke ``rationele'' agent een intrinsieke nutsfunctie heeft, die gebruikt wordt om een redelijk actieplan op te stellen: de rationele keuze is precies die keuze wiens uitkomst de verwachtingswaarde van de nutsfunctie maximaliseert.  Als een nutsfunctie concaaf is (i.e. gedefinieerd op een compactum $I$ van $\mathbb{R}$ zodat $\forall x, y \in I, \forall t \in [0, 1]: u(tx + (1-t)y) \geq t u(x) + (1-t) u(y)$), noemen we de agent \textit{risico-avers}.
+
+\newpage
+
 \section{Introduction}
 Quantitative risk measurement is an umbrella term for a variety of techniques used to quantify potential losses, often in an actuarial or financial context. One can imagine an insurer or a bank writing out premiums or loans, with a certain associated `risk' of incurring a loss: either the policyholder files a claim, or the lender cannot pay back their loan. An insurer is in general not interested in individual risks, but in their aggregate: indeed, it is the total risk that determines the necessary reserves the insurer needs to put aside, to pay out the claims that they expect to receive (the so-called \textit{technical reserves}).
 
-If we have $n$ clients, each with an associated random variable $X_i$ (for $i \in \{1, ..., n\}$), the aggregate risk is denoted with $S = \sum_{i=1}^n X_i$. The mathematics for working out properties of $S$ is by far the easiest if all $X_i$'s are independent, but this is in practice rarely the case: for example, a burglary occurring in a neighbourhood can be a good indicator of other houses in the same neighbourhood being burgled in a short timespan after the first incident. To this end, we introduce a special class of distribution functions called \textit{copulae}, to model the dependence structure between the different losses. 
+If we have $n$ clients, each with an associated random variable $X_i$ (for $i \in \{1, ..., n\}$) representing the risk of this client, the aggregate risk is denoted with $S = \sum_{i=1}^n X_i$. The mathematics for working out properties of $S$ is by far the easiest if all $X_i$'s are independent, but this is in practice rarely the case: for example, a burglary occurring in a neighbourhood can be a good indicator of other houses in the same neighbourhood being burgled in a short timespan after the first incident. As a result, we want to model the dependence structure between the different risks, in a way that is mathematically still feasible. To this end, we introduce a special class of distribution functions called \textit{copulae}.
 
 In this document, our focus will be on the specific case where our losses are distributed lognormally, and the copula between these losses is the so-called Gaussian copula. Our goal will be to find an adequate approximation for $S$, in a closed form expression. We will numerically compare the calculation speeds and accuracy of this closed form with the more ``primitive'' Monte Carlo method.
 
@@ -89,6 +110,8 @@ In this document, our focus will be on the specific case where our losses are di
 Throughout this report, we will be placing ourselves in the shoes of an insurance company. It is of course in the interest of this company to make a profit. In a simplified view, it can only do so if it can make sure that the sum of money that is claimed by the policyholders does not exceed the total income, which in turn is determined by the price of the insurance policies that the company decides to offer (this price is called the policy's \textit{premium}). The core objective is thus to determine how much money to put aside, to pay out the claims the company expects to receive. Suppose we have $n$ policyholders. Each of the policyholders can be modelled using a stochastic variable $X_i$ (with $1 \leq i \leq n$), where the value of this variable represents the amount of money that this client files a valid claim for. Each of these variables is called a \textit{risk}. We are interested in the \textit{aggregate risk}, denoted $S$ and defined as $\sum_{i=1}^n X_i$, and in particular the expected value $\mathbb{E}[S]$. Indeed, if the insurance company makes sure to have at least this sum of money, we can expect to cover the claims that will be made. This total risk is called a \textit{technical reserve}.
 
 Under the assumption that all claims are independent of each other (in the probability theoretical sense), the calculation of this expected value is very easy in practice, since we can simply sum together the individual expectations. However, in practice one cannot make this assumption: for instance, natural disasters can wreak havoc in a large residential area, resulting in several claims relating to housing damage all at once.
+
+In this report we will also discuss some risk measures. This is predominantly relevant in an actuarial context since financial regulators impose certain restrictions on insurers concerning a minimum capital that they are legally required to own. This minimum capital is often calculated based on these risk measures. However, there is a cost to accruing more capital (due to investment-related matters), so for insurers this is often a delicate balance. In particular the so-called \textit{Value-at-Risk} is often used in legislation.
 
 \subsection{Expected utility theory} 
 The classical framework used to reason about the rationality of making decisions was first proposed by John von Neumann and Oskar Morgenstern. Central in their reasoning is the concept of a \textit{utility function} $u: \mathbb{R} \to \mathbb{R}$, which quantifies the degree to which the agent under consideration values accruing a given amount of capital. Von Neumann and Morgenstern posit that any ``rational'' agent has an intrinsic utility function which they use to determine a reasonable course of action: the rational choice is precisely the choice whose outcome is expected to maximise the value of the agent's utility function. If a utility function is concave (i.e. defined on a compact set $I$ of $\mathbb{R}$ such that $\forall x, y \in I, \forall t \in [0, 1]: u(tx + (1-t)y) \geq t u(x) + (1-t) u(y)$), the corresponding agent is called \textit{risk averse}.
@@ -112,7 +135,7 @@ It is important to note that most of these results still hold for discrete rando
 
 \section{Risk measures}
 
-Risk measures are functions used for quantifying the risk inherent to a certain stochastic variable. One practical purpose of such quantification worth immediately highlighting here is to determine the minimum capital an insurance company is legally required to possess. For example, in the European Union, the Solvency II directive states that the ``solvency capital requirement [...] shall correspond to the Value-at-Risk of the basic own funds of an insurance or reinsurance undertaking subject to a confidence level of 99,5 \% over a one-year period'' \cite{SolvencyII}[Art. 101ter.]. This \textit{Value-at-Risk} is an example of a risk measure, which we define below.
+Risk measures are functions used for quantifying the risk inherent to a certain stochastic variable. One practical purpose of such quantification worth immediately highlighting here is to determine the minimum capital an insurance company is legally required to possess. For example, in the European Union, the Solvency II directive states that the ``solvency capital requirement [...] shall correspond to the Value-at-Risk of the basic own funds of an insurance or reinsurance undertaking subject to a confidence level of 99,5 \% over a one-year period'' \cite[Art. 101ter.]{SolvencyII}. This \textit{Value-at-Risk} is an example of a risk measure, which we define below.
 
 \begin{definition}\cite[Definition 6.2.1]{Risk_Measurement}
 A risk measure $\rho$ is a real functional on a set of real-valued random variables $\Gamma$ on some probability space $(\Omega, \mathcal{F}, \mathbb{P})$. 
@@ -144,7 +167,7 @@ One can show that the Expected Shortfall and the Tail Value-at-Risk are related 
 $$\text{TVaR}_p[X] = F_X^{-1}(p) + \frac{1}{1-p}\text{ES}_p[X]$$
 for $p\in (0,1)$.
 
-Intuitively, one can think of the value-at-risk as the quantity that answers the question ``What loss is exceeded with probability $1 - p$?'', whereas the Tail Value-at-Risk answers the question ``How bad is the situation once we indeed exceed that $1-p$ loss?'' This highlights one of the most often criticised weaknesses of the VaR: in a sense, it is not sensitive to tail behaviour. Two risks could have an identical chance of exceeding a certain loss, but one could have a much thicker tail, indicating that the latter is more disastrous in case of the loss being exceeded.
+Intuitively, one can think of the value-at-risk as the quantity that answers the question ``What loss is exceeded with probability $1 - p$?'', whereas the Tail Value-at-Risk answers the question ``How bad is the situation once we indeed exceed that $1-p$ loss?'' This highlights one of the most often criticised weaknesses of the VaR: in a sense, it is not sensitive to tail behaviour. Two risks could have an identical chance of exceeding a certain loss, but one could have a much thicker tail, indicating that the latter is more disastrous in case of the loss being exceeded. 
 
 \section{Copulas}
 A copula is a multivariate cumulative distribution function for a random vector with uniform marginals which can be used to model the dependence structure between random variables. A two-dimensional copula is defined as follows.
@@ -250,7 +273,7 @@ Similarly, if we assume a Gaussian copula with parameter $\beta$, we get
 \end{align*}
 We want to see the difference in the dependence structure when assuming these different copulas given that the correlation coefficient is the same in both cases. To do this we take a sample using Frank's copula, calculate the correlation coefficient numerically and use this value as the parameter for the Gaussian copula. So taking a sample size of $50000$ and parameter $\alpha = 55$, we get a correlation coefficient of (approximately) $0.9938$. Using this as parameter for the Gaussian copula, we can plot the sample data points next to each other to compare. Figure \ref{fig:copulavergelijking} shows these results. Notice that towards the more extremal values, Frank's copula \say{fans out} whereas the Gaussian copula stays fairly aligned to the first bisector. Thus we see that even though the marginal distributions and the correlation coefficients of both of these datasets are the same, the joint distribution looks quite different.
 
-For the insurer, this represents quite a problem. If there is a dependence structure between individual risks associated with individual policyholders, the experiment above demonstrates that this dependence can influence the aggregate risk. However, a priori we do not know anything about the copula that underlies this dependence structure. Even more problematically, we don't know if this dependence even is modellable using a copula. As Paul Embrechts once put it: ``A copula does not model economic reality but is a mathematical structure which fits historical data. This is a clear flaw from a risk-management point of view.'' \cite{Donnelly_Embrechts_2010} The term for this uncertainty is \textit{dependence risk}. Notably, misuse or misinterpretation of results predicted from a Gaussian copula model played a significant role in the financial crisis of 2008. 
+For the insurer, this represents quite a problem. If there is a dependence structure between individual risks associated with individual policyholders, the experiment above demonstrates that this dependence can influence the aggregate risk. However, a priori we do not know anything about the copula that underlies this dependence structure. Even more problematically, we don't know if this dependence even is modellable using a copula (``A copula does not model economic reality but is a mathematical structure which fits historical data. This is a clear flaw from a risk-management point of view.'' \cite{Donnelly_Embrechts_2010}). The term for this uncertainty is \textit{dependence risk}. Notably, misuse or misinterpretation of results predicted from a Gaussian copula model played a significant role in the financial crisis of 2008. 
 
 It is precisely this joint distribution that ends up determining the distribution of the sum of the variables under consideration. So we need to understand the way the copula affects this distribution in order to understand the behaviour of the aggregate risk. To this avail, let us distance ourselves from the practical and focus on the mathematically idealised.
 
@@ -917,7 +940,7 @@ The procedures outlined above can be compared on two fronts, both of practical c
 
 As discussed in Subsection \ref{Subsection: Monte Carlo}, the Monte Carlo computation time scales linearly with the sample size.  A larger sample size improves the accuracy of this estimation, but comes with a proportional computation cost. Throughout this analysis, we work with sample sizes of at least $10^5$, for which we consider the Monte Carlo estimates sufficiently close to the true TVaR of $S$ to serve as a reference value for evaluating the closed-form lower bound. 
 
-The computational cost of the closed-form estimation only depends on the dimension (the number of individual risks we consider). Figure \ref{fig: computation times closed-form} shows the computation times in function of the dimension. Here we used the average of 100 repetitions, the small variations can be attributed to the computer and software. The values of the $\beta$ vector were chosen uniformly in the range $(1,2)$, without optimization\footnote{see the appendix}. We can compare this to the (approximated) computation time for the Monte Carlo calculations as studied in Subsection \ref{Subsection: Monte Carlo}. If we take a sample size of $10^5$ we can use the equation \eqref{eq: computation time MC} \footnote{notice that $n$ in this equation refers to the sample size and not the dimension.} to see that the Monte Carlo method would take about $1550 \mu s$.  So for a fixed dimension of $n = 10$ (and a fixed choice of the $\beta$ vector)  the closed-form calculations are a lot faster than the Monte Carlo estimation.
+The computational cost of the closed-form estimation only depends on the dimension (the number of individual risks we consider). Figure \ref{fig: computation times closed-form} shows the computation times in function of the dimension. Here we used the average of 100 repetitions, the small variations can be attributed to the computer and software. The values of the $\beta$ vector were chosen uniformly in the range $(1,2)$, without optimization\footnote{see the appendix}. We can compare this to the (approximated) computation time for the Monte Carlo calculations as studied in Subsection \ref{Subsection: Monte Carlo}. If we take a sample size of $10^5$ we can use the equation \eqref{eq: computation time MC} \footnote{notice that $n$ in this equation refers to the sample size and not the dimension.} to see that the Monte Carlo method would take about $1550 \; \mu\text{s}$.  So for a fixed dimension of $n = 10$ (and a fixed choice of the $\beta$ vector)  the closed-form calculations are a lot faster than the Monte Carlo estimation.
 
 %The advantage of this trade off is that we can influence the accuracy of this estimation by varying the sample size. In comparison, the closed-form lower bound for the Tail Value-at-Risk only depends on $n$, the amount of individual risks. If this lower bound is not accurate enough, we would have to choose a new vector $\beta$ to improve this estimation. 
 
@@ -949,7 +972,7 @@ The closed-form estimation seems to be more efficient than the Monte Carlo estim
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\linewidth]{DifferentSigmasTVaR.png}
-    \caption{Relative error of the lower bound estimate for different ranges of $\sigma$   \label{fig: sigmaVgl}}
+    \caption{Relative error of the lower bound estimate for different ranges of $\sigma$ \label{fig: sigmaVgl}}
 \end{figure}
 
 \subsection{Conclusion}
@@ -957,159 +980,13 @@ In this section we have combined the theory of the previous sections to get a ge
 
 For large sample sizes we may assume that the Monte Carlo estimation is an accurate approximation of the true value of the TVaR, but this comes with expensive computational costs since the computation time increases linearly with the sample size. The calculations of the closed-form expressions of the lower bound of the TVaR are a lot cheaper in computation time, these only depend on the amount of individual risks $n$. 
 
-While the TVaR of  $S^l$ is merely a lower bound of the TVaR of $S$, it turns out that these estimations can be quite accurate, depending on the distribution parameters of the $X_i$'s and the choice of the $\beta$ vector.
+While the TVaR of $S^l$ is merely a lower bound of the TVaR of $S$, it turns out that these estimations can be quite accurate, depending on the distribution parameters of the $X_i$'s and the choice of the $\beta$ vector.
 %Standard error deviation (Cox and Hinkley, 1974 estimator)
 
+\section{Conclusion}
 
-\newpage
-\section{Code}
-\begin{lstlisting}[language=R]
-library(mvtnorm)
-library(ggplot2)
-library(ggExtra)
-library(sn)
-library(twopiece)
-library(plotly)
-library(copula)
-library(PerformanceAnalytics)
-library(tidyr)
+In this report, we explored some foundational concepts from quantitative risk measurement. We introduced some common examples of risk measures and copulas, explored stochastic orderings and their application on these risk measures. An upper bound, but more pertinently a lower bound, on the Value-at-Risk and Tail Value-at-Risk, and found a closed form expression for these bounds. Finally, this closed form expression was implemented in \texttt{R}, and the calculation speed and accuracy were compared to a routine Monte Carlo implementation. If the variances of the lognormals are small enough, the closed form for the lower bound forms an especially satisfactory estimation.
 
-
-## Different copulas with lognormal marginal distributions
-
-
-n  <- 5000
-m  <- 2
-
-# Frank's copula
-alpha <- 10
-
-
-frankCop <- frankCopula(alpha, m)
-U1 <- rCopula(n, frankCop)
-
-X1 <- qlnorm(U1, meanlog = 0, sdlog = 1)
-
-df1 <- as.data.frame(X1)
-colnames(df1) <- c("x","y")
-
-p1 <- ggplot(df1, aes(x, y)) + 
-  geom_point() + 
-  theme(axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14)) +
-  geom_point(size = .5) + 
-  xlab("X") + ylab("Y")
-
-p1
-
-
-# Gaussian copula
-correlation <- cor(U1)
-rho <- correlation[1,2]
-
-gaussianCop <- normalCopula(rho, m, dispstr = "ex")
-U2 <- rCopula(n, gaussianCop)
-
-X2 <- qlnorm(U2, meanlog = 0, sdlog = 1)
-
-
-df2 <- as.data.frame(X2)
-colnames(df2) <- c("x","y")
-
-
-p2 <- ggplot(df2, aes(x, y)) + 
-  geom_point() + 
-  theme(axis.text.x = element_text(size = 14), 
-        axis.text.y = element_text(size = 14)) +
-  geom_point(size = .5) +
-  xlab("X") + ylab("Y")
-
-p2
-
-
-## Aggregate loss with different copulas 
-
-n  <- 10000
-m <- 100
-
-# Frank's copula
-alpha    <- 10
-
-frankCop <- frankCopula(alpha, m)
-U1 <- rCopula(n, frankCop)
-
-X1 <- qlnorm(U1, meanlog = 0, sdlog = 1)
-S1 <- rowSums(X1)
-
-ggplot(data.frame(S1), aes(S1)) +
-  geom_histogram(bins = 60, fill = "darkred", color = "white") +
-  labs(x = "Total Loss S",
-       y = "Frequency")
-
-
-var1 <- quantile(S1, 0.99)
-tvar1 <- mean(S1[S1 > var1])
-
-# Gaussian copula
-
-corr <- cor(U1)
-
-gaussianCop <- normalCopula(param = P2p(corr), dim = m, dispstr = "un")
-U2 <- rCopula(n, gaussianCop)
-
-X2 <- qlnorm(U2, meanlog = 0, sdlog = 1)
-S2 <- rowSums(X2)
-
-ggplot(data.frame(S2), aes(S2)) +
-  geom_histogram(bins = 60, fill = "darkred", color = "white") +
-  labs(x = "Total Loss S",y = "Frequency")
-
-var2 <- quantile(S2, 0.99)
-tvar2 <- mean(S2[S2 > var2])
-
-
-
-## Value-at-Risk and Tail Value-at-Risk
-
-n  <- 10000
-m <- 10
-
-rho <- seq(0, 0.99, 0.05)
-results <- data.frame(rho = rho, VaR = NA, TVaR = NA)
-
-for (r in 1:length(rho)){
-  corr_matrix <- matrix(rho[r], m, n)
-  diag(corr_matrix) <- 1
-  
-  gaussianCop <- normalCopula(rho[r], m, dispstr = "ex")
-  U <- rCopula(n, gaussianCop)
-  X <- qlnorm(U, meanlog = 0, sdlog = 1)
-  S <- rowSums(X)
-  
-  var <- quantile(S, 0.99)
-  results$VaR[r] <- var
-  results$TVaR[r] <- mean(S[S > var])
-  
-}
-
-p1 <- ggplot(results, aes(x = rho, y = VaR)) +
-  geom_line(color = "steelblue", linewidth = 1) +
-  labs(
-    x = expression(Correlation),
-    y = "Value at risk"
-  ) +
-  theme_minimal()
-p1
-
-p2 <- ggplot(results, aes(x = rho, y = TVaR)) +
-  geom_line(color = "darkred", linewidth = 1) +
-  labs(
-    x = expression(Correlation),
-    y = "Tail value at risk"
-  ) +
-  theme_minimal()
-p2
-\end{lstlisting}
 \printbibliography
 
 \newpage
@@ -1117,27 +994,30 @@ p2
 Finding an optimal $\beta$ is done via quite a crude optimisation algorithm, whereby we define an initial search space for the $\beta$'s as an interval $[\beta_\text{min}, \beta_\text{max}]^{\otimes n}$, divide this up along each axis into a fixed number $k$ of equally spaced points to get $k^n$ evaluation points, evaluate the correlation in each of those grid points and store the one with the highest Euclidean norm. We use the built-in \texttt{cor} routine for this to make the code a bit more sightly: in practice the empirical correlation and the theoretical one are close enough. We then define a new search space around this highest value and refine the search; this is done recursively and stops once a desired precision has been reached.
 
 \begin{lstlisting}[language=R, caption=Beta optimisation routine]
-findBestBeta <- function(minV, maxV, k, iterationsLeft) {
-  stepSizes <- (maxV - minV) / k
-  linspaces <- lapply(1:n, function(i) seq(minV[i], maxV[i], by = stepSizes[i]))
+findBestβ <- function(minV, maxV, sieve, iterationsLeft) {
+  stepSizes <- (maxV - minV) / sieve
+  linspaces <- lapply(1:n, function(i) seq(from = minV[i], to = maxV[i], by = stepSizes[i]))
   searchSpace <- expand.grid(linspaces, KEEP.OUT.ATTRS = FALSE)
-  bestBeta = rep(NA, n)
+  
+  bestβ = rep(NA, n)
   bestCor = -Inf
-  for (i in 1:k^n) {
-    beta <- c(searchSpace[i, 1:n], use.names = FALSE, recursive = TRUE)
-    correlation <- cor(Y, Y %*% beta)
+  
+  for (i in 1:sieve^n) {
+    β <- c(searchSpace[i, 1:n], use.names = FALSE, recursive = TRUE)
+    correlation <- cor(Y, Y %*% β)
     euclNorm <- (t(correlation) %*% correlation)[1,1]
     if (euclNorm > bestCor) {
-      bestBeta <- beta
+      bestβ <- β
       bestCor = euclNorm
     }
   }
+  
+  message(sprintf("best β with %d iterations left is %s", iterationsLeft, paste(bestβ, collapse = ", ")))
+  
   if (iterationsLeft == 0) {
-    return(bestBeta)
+    return(bestβ)
   } else {
-    newMin <- bestBeta - stepSizes / 2
-    newMax <- bestBeta + stepSizes / 2
-    return(findBestBeta(newMin, newMax, k, iterationsLeft - 1))
+    return(findBestβ(bestβ - stepSizes / 2, bestβ + stepSizes / 2, sieve, iterationsLeft - 1))
   }
 }
 \end{lstlisting}
@@ -1149,5 +1029,860 @@ One can rightfully remark that such a procedure will only produce the optimal va
     \includegraphics[width=1\linewidth]{Correlations.png}
     \caption{The correlations between different coordinates}
 \end{figure}
+
+\newpage
+
+\section*{Appendix B: code}
+
+\begin{lstlisting}[language=R]
+library(mvtnorm)
+library(ggplot2)
+library(ggExtra)
+library(sn)
+library(twopiece)
+library(plotly)
+library(copula)
+library(PerformanceAnalytics)
+library(tidyr)
+library(dplyr)
+
+## Different copulas with lognormal marginal distributions
+
+n  <- 50000
+m <- 2
+
+# Frank's copula
+alpha <- 55
+frankCop <- frankCopula(alpha, m)
+U1 <- rCopula(n, frankCop)
+X1 <- qnorm(U1, mean = 0, sd = 1)
+df1 <- as.data.frame(X1)
+colnames(df1) <- c("x","y")
+
+# Gaussian copula
+correlation <- cor(U1)
+rho <- correlation[1,2]
+
+gaussianCop <- normalCopula(rho, m, dispstr = "ex")
+U2 <- rCopula(n, gaussianCop)
+X2 <- qnorm(U2, mean = 0, sd = 1)
+df2 <- as.data.frame(X2)
+colnames(df2) <- c("x","y")
+
+df1$Copula <- "Frank's"
+df2$Copula <- "Gaussian"
+df <- rbind(df1, df2)
+df <- df[sample(nrow(df)), ] # shuffle the rows to avoid any ordering effects in the plot
+
+ggplot(df, aes(x, y, color = Copula)) + 
+  geom_point(size = .5) + 
+  theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14)) +
+  xlab("X") + ylab("Y") +
+  scale_color_manual(values = c("darkred", "steelblue")) +
+  labs(color = "Copula type") +
+  theme(legend.title = element_text(size = 14), legend.text = element_text(size = 12))
+
+## Aggregate loss with different copula's 
+
+n  <- 10000
+m <- 100
+
+rho <- 0.7
+
+gaussianCop <- normalCopula(rho, m, dispstr = "ex")
+U <- rCopula(n, gaussianCop)
+
+X <- qlnorm(U, meanlog = 0, sdlog = 1)
+S <- rowSums(X)
+
+var <- quantile(S, 0.99)
+tvar <- mean(S[S > var])
+
+ggplot(data.frame(S), aes(S)) +
+  geom_histogram(bins = 60, fill = "darkred", color = "white") +
+  geom_vline(aes(xintercept = var, color = "VaR 0.99"), linewidth = 0.5) +
+  geom_vline(aes(xintercept = tvar, color = "TVaR 0.99"), linewidth = 0.5) +
+  scale_color_manual(values = c("VaR 0.99" = "steelblue", "TVaR 0.99" = "palevioletred")) +
+  labs(x = "Total Loss S", y = "Frequency", color = "Risk Measure") + 
+  theme(legend.position = c(1, 1), legend.justification = c(1, 1))
+
+## Value-at-risk and Tail value-at-risk
+
+n  <- 25000
+m <- 10
+repetitions <- 50
+
+rho <- seq(0, 0.99, 0.05)
+results <- data.frame()
+
+for (r in 1:length(rho)){
+  for (repetition in 1:repetitions) {
+    gaussianCop <- normalCopula(rho[r], m, dispstr = "ex")
+    U <- rCopula(n, gaussianCop)
+    X <- qlnorm(U, meanlog = 0, sdlog = 1)
+    S <- rowSums(X)
+    
+    var <- quantile(S, 0.99)
+    tvar <- mean(S[S > var])
+    
+    results <- rbind(results, data.frame(rho = rho[r], repetition = repetition, VaR = var, TVaR = tvar))
+  }
+}
+
+summary_df <- results %>%
+  group_by(rho) %>%
+  summarise(min_VaR = min(VaR), max_VaR = max(VaR), mean_VaR = mean(VaR),
+            min_TVaR = min(TVaR), max_TVaR = max(TVaR), mean_TVaR = mean(TVaR))
+
+p1 <- ggplot() +
+  geom_line(data=results, aes(x=rho, y=VaR, group=repetition), alpha=0.3, color="gray") +
+  geom_ribbon(data=summary_df, aes(x=rho, ymin=min_VaR, ymax=max_VaR), alpha=0.3, fill="lightblue") +
+  geom_line(data=summary_df, aes(x=rho, y=mean_VaR), color="black", linewidth=1.5) +
+  labs(
+    x = expression(Correlation),
+    y = "Value-at-Risk (q = 0.99)"
+  ) +
+  theme_minimal(base_size = 16)
+p1
+
+p2 <- ggplot() +
+  geom_line(data=results, aes(x=rho, y=TVaR, group=repetition), alpha=0.3, color="gray") +
+  geom_ribbon(data=summary_df, aes(x=rho, ymin=min_TVaR, ymax=max_TVaR), alpha=0.3, fill="lightcoral") +
+  geom_line(data=summary_df, aes(x=rho, y=mean_TVaR), color="black", linewidth=1.5) +
+  labs(
+    x = expression(Correlation),
+    y = "Tail Value-at-Risk (q = 0.99)"
+  ) +
+  theme_minimal(base_size = 16)
+p2
+\end{lstlisting}
+
+\begin{lstlisting}[language=R]
+library(ggplot2)
+library(copula)
+library(microbenchmark)
+library(gridExtra)
+library(tidyr)
+library(dplyr)
+library(patchwork)
+library(broman)
+library(kableExtra)
+
+
+generateCorrelationMatrix <- function(n) {
+  # We first generate a correlation matrix:
+  Loadings <- matrix(runif(n^2, 0, 1), nrow = n)
+  Symm <- Loadings %*% t(Loadings)
+  D <- diag(1 / sqrt(diag(Symm)))
+  
+  D %*% Symm %*% D
+}
+
+runAll <- function(
+    trials, 
+    n, 
+    correlationMatrix = NULL,
+    βGiven = NULL,
+    μRange = list(min = -1, max = 1),
+    σRange = list(min = 0, max = 1),
+    μGiven = NULL,
+    σGiven = NULL,
+    pValues = seq(0, 0.99, by = 0.01), 
+    microbenchmarkControl = list(warmup = 20, replications = 50), 
+    optimiseBeta = FALSE,
+    inspectCorrelation = NULL) {
+  message(sprintf("Running with %d trials and %d dimensions", trials, n))
+  
+  if (is.null(correlationMatrix)) {
+    R <- generateCorrelationMatrix(n)
+  } else {
+    R <- correlationMatrix
+  }
+  
+  gaussianCopula <- normalCopula(param = R[lower.tri(R)],
+                                 dim = n,
+                                 dispstr = "un")
+  Unif <- rCopula(trials, gaussianCopula)
+  
+  # Get some interesting parameters for the lognormal distributions
+  if (is.null(μGiven)) {
+    μ = runif(n, min = μRange$min, max = μRange$max)
+  } else {
+    μ = μGiven
+  }
+  
+  if (is.null(σGiven)) {
+    σ = runif(n, min = σRange$min, max = σRange$max)
+  } else {
+    σ = σGiven
+  }
+  
+  multivariateDist <- mvdc(
+    copula = gaussianCopula,
+    margins = rep("lnorm", n),
+    paramMargins = lapply(1:n, function(i) list(meanlog = μ[i], sdlog = σ[i]))
+  )
+  
+  samplingTime <- summary(microbenchmark(
+    rMvdc(trials, multivariateDist), 
+    unit = "us", 
+    control = microbenchmarkControl
+  ))
+  
+  Y <- rMvdc(trials, multivariateDist)
+  S <- rowSums(Y)
+  
+  df <- data.frame()
+  
+  # Find some vector β such that Cor(Y, β · Y) is high; for simplicity we will do
+  # this using the builtin cor() function since that simplifies the code a bit
+  
+  findBestβ <- function(minV, maxV, sieve, iterationsLeft) {
+    stepSizes <- (maxV - minV) / sieve
+    linspaces <- lapply(1:n, function(i) seq(from = minV[i], to = maxV[i], by = stepSizes[i]))
+    searchSpace <- expand.grid(linspaces, KEEP.OUT.ATTRS = FALSE)
+    
+    bestβ = rep(NA, n)
+    bestCor = -Inf
+    
+    for (i in 1:sieve^n) {
+      β <- c(searchSpace[i, 1:n], use.names = FALSE, recursive = TRUE)
+      correlation <- cor(Y, Y %*% β)
+      euclNorm <- (t(correlation) %*% correlation)[1,1]
+      if (euclNorm > bestCor) {
+        bestβ <- β
+        bestCor = euclNorm
+      }
+    }
+    
+    message(sprintf("best β with %d iterations left is %s", iterationsLeft, paste(bestβ, collapse = ", ")))
+    
+    if (iterationsLeft == 0) {
+      return(bestβ)
+    } else {
+      return(findBestβ(bestβ - stepSizes / 2, bestβ + stepSizes / 2, sieve, iterationsLeft - 1))
+    }
+  }
+  
+  # since we chose the correlation matrix to be positive definite, any choice of
+  # β's with ∀ i: βᵢ > 0 will lead to a positive correlation between Y and Λ.
+  if (is.null(βGiven)) {
+    if (optimiseBeta) {
+      β <- findBestβ(rep(1, n), rep(5, n), 3, 5)
+    } else {
+      β <- runif(n, min = 1, max = 2)
+    }
+  } else {
+    β <- βGiven
+  }
+  
+  # The following is debug code to draw a heatmap for correlations associated with β's 
+  # to check if there is some global maximum to aim for
+  # if this is not the case, the whole endeavour is futile
+  # because of the huge expand.grid, we will only do this for a small number of 
+  # coordinates and a coarse grid, but it should be enough to get an idea of the landscape
+  if (!is.null(inspectCorrelation)) {
+    linspace <- seq(from = inspectCorrelation$from, to = inspectCorrelation$to, by = inspectCorrelation$by)
+    searchSpace <- expand.grid(lapply(1:n, function(x) linspace))
+    
+    gridDF <- data.frame()
+    
+    progress <- txtProgressBar(max=(length(linspace)^n), initial=0, style=3, char="#")
+    
+    for (i in 1:(length(linspace)^n)) {
+      β <- c(searchSpace[i, 1:n], use.names = FALSE, recursive = TRUE)
+      # message(paste(β, collapse = ", "))
+      correlation <- cor(Y, Y %*% β)
+      euclNorm <- (t(correlation) %*% correlation)[1,1]
+      
+      coordValues <- as.list(β)
+      names(coordValues) <- lapply(1:n, function (num) paste("coord_", num, sep=""))
+      
+      value <- c(val = euclNorm, coordValues)
+      
+      # store the position and value for the heatmap
+      gridDF <- rbind(gridDF, value)
+      
+      setTxtProgressBar(progress, i)
+    }
+    
+    # view pairwise plots as heatmaps per coordinate pair in a grid
+    plotList <- list()
+    for (i in 1:(n-1)) {
+      for (j in (i+1):n) {
+        plotList[[length(plotList) + 1]] <- ggplot(gridDF, aes_string(x = paste("coord_", i, sep=""), y = paste("coord_", j, sep=""))) +
+          geom_tile(aes(fill = val)) +
+          scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = quantile(gridDF[,"val"], 0.75)) +
+          labs(title = sprintf("coord_%d vs. coord_%d", i, j), x = sprintf("coord_%d", i), y = sprintf("coord_%d", j)) +
+          theme_minimal() + 
+          guides(fill="none")
+      }
+    }
+    
+    
+    do.call("grid.arrange", c(plotList, ncol = n-1))
+    return(gridDF)
+  }
+  
+  
+  {
+    # theoretical covariance between Yᵢ and Yⱼ:
+    tCov <- function(i, j) {
+      exp(μ[i] + μ[j] + 0.5 * (σ[i]^2 + σ[j]^2)) * (exp(R[i, j] * σ[i] * σ[j]) - 1)
+    }
+    
+    # Theoretical correlation between Y and Λ, making use of the fact that Cov is a bilinear form:
+    VarΛ = sum(sapply(1:n, function(i) {
+      sum(sapply(1:n, function(j) { β[i] * β[j] * tCov(i, j) }))
+    }))
+    
+    ρ = sapply(1:n, function(i) {
+      nom = sum(sapply(1:n, function(j) { β[j] * tCov(i, j) }))
+      den = sqrt(tCov(i, i) * VarΛ)
+      nom / den
+    })
+    
+    rm(tCov, VarΛ)
+  }
+  
+  if (length(pValues) == 1) {
+    progress <- txtProgressBar(
+      min = 0,
+      max = max(pValues),
+      initial = 0,
+      style = 3,
+      char = "#")
+  } else {
+    progress <- txtProgressBar(
+      min = min(pValues), 
+      max = max(pValues), 
+      initial = min(pValues), 
+      style = 3, 
+      char = "#")
+  }
+  
+  for (p in pValues) {
+    mc2 = microbenchmark(mean(S[S > quantile(S, p)]), unit = "us", control = microbenchmarkControl)
+    cf2 = microbenchmark(sum(sapply(1:n, function(i) {
+          b = μ[i] + 0.5 * (1 - ρ[i]^2) * σ[i]^2
+          exp(b + (σ[i]^2 * ρ[i]^2) / 2) * pnorm(σ[i]* ρ[i] - qnorm(p))
+          }))  / (1-p), unit = "us", control = microbenchmarkControl)
+    
+    TVaR_monteCarlo = mean(S[S > VaR_monteCarlo])
+    TVaR_closedForm = sum(sapply(1:n, function (i) {
+      b = μ[i] + 0.5 * (1 - ρ[i]^2) * σ[i]^2
+      exp(b + (σ[i]^2 * ρ[i]^2) / 2) * pnorm(σ[i]* ρ[i] - qnorm(p))
+    }))  / (1-p)
+    
+    df <- rbind(df, list(
+      pLevel = p, 
+      MC2 = TVaR_monteCarlo,
+      CF2 = TVaR_closedForm,
+      
+      MC2TimeAvg = summary(mc2)$mean + samplingTime$mean,
+      CF2TimeAvg = summary(cf2)$mean,
+      MCTimeMax = summary(mc)$max + samplingTime$max,
+      CFTimeMax = summary(cf)$max,
+      MC2TimeMax = summary(mc2)$max + samplingTime$max,
+      CF2TimeMax = summary(cf2)$max,
+      
+      MCError = quantileEstimation[[2]]
+    ))
+    
+    setTxtProgressBar(progress, p)
+  }
+  
+  message(sprintf("avg Monte Carlo time: %f μs, avg closed form time: %f μs", mean(df$MCTimeAvg), mean(df$CFTimeAvg)))
+  
+  rm(list = ls() %>% setdiff(c("df")))
+  
+  df
+}
+
+execution_times <- data.frame()
+avgRuns <- 2
+for (trials in seq(10e4, 50e4, by = 10e4)) {
+  mcTimes <- numeric(avgRuns)
+  cfTimes <- numeric(avgRuns)
+  mc2Times <- numeric(avgRuns)
+  cf2Times <- numeric(avgRuns)
+  
+  for (i in 1:avgRuns) {
+    result <- runAll(trials = trials, n = 10, pValues = seq(0.1, 0.9, by = 0.1))
+    mcTimes[i] <- mean(result$MCTimeAvg)
+    cfTimes[i] <- mean(result$CFTimeAvg)
+    mc2Times[i] <- mean(result$MC2TimeAvg)
+    cf2Times[i] <- mean(result$CF2TimeAvg)
+  }
+  
+  execution_times <- rbind(execution_times, list(
+    trials = trials, 
+    MCTimeMin = min(mcTimes),
+    MCTimeAvg = mean(mcTimes),
+    MCTimeMax = max(mcTimes),
+    CFTimeMin = min(cfTimes),
+    CFTimeAvg = mean(cfTimes),
+    CFTimeMax = max(cfTimes),
+    MC2TimeMin = min(mc2Times),
+    MC2TimeAvg = mean(mc2Times),
+    MC2TimeMax = max(mc2Times),
+    CF2TimeMin = min(cf2Times),
+    CF2TimeAvg = mean(cf2Times),
+    CF2TimeMax = max(cf2Times)
+  ))
+}
+
+
+speedup <- mutate(execution_times, Speedup = MC2TimeAvg / CF2TimeAvg)
+
+ggplot(speedup, aes(x = trials)) +
+  geom_line(aes(y = Speedup), color = "blue") +
+  labs(title = "Speedup of Closed Form over Monte Carlo", x = "Number of trials", y = "Speedup (Closed Form Time / Monte Carlo Time)") +
+  theme_minimal()
+
+# split the plot into two subplots to better visualize the time ranges
+pivoted <- execution_times %>%
+  select(trials, starts_with("MC2"), starts_with("CF2")) %>%
+  pivot_longer(
+    cols = -trials,
+    names_to = c("Method", ".value"),
+    names_pattern = "(MC2|CF2)Time(Min|Avg|Max)"
+  )
+
+pivoted$Method <- recode(pivoted$Method,
+                         MC2 = "Monte Carlo",
+                         CF2 = "Closed Form")
+
+ggplot(pivoted, aes(x = trials)) +
+  geom_line(aes(y = Avg, colour = Method)) +
+  geom_ribbon(aes(ymin = Min, ymax = Max, fill = Method), alpha = 0.2) +
+  labs(title = "Average computation time for Closed form vs. Monte Carlo (sample size 1e6)", x = "Number of trials", y = "Average Time (μs)") +
+  theme_minimal() +
+  theme(legend.position = "none") + 
+  facet_wrap(~Method, scales = "free_y")
+
+
+
+# We can also look at individual calculation times in more detail
+
+df <- runAll(
+  trials = 100000, 
+  n = 10, 
+  pValues = seq(0.01, 0.99, by = 0.01), 
+  σRange = list(min = 0, max = 0.1),
+  microbenchmarkControl = list(warmup = 0, replications = 0),
+  optimiseBeta = FALSE)
+
+ggplot(subset(df, pLevel > 0.8), aes(x = pLevel)) +
+  geom_line(aes(y = MC2, color = "Monte Carlo")) +
+  geom_line(aes(y = CF2, color = "Closed Form")) +
+  
+  labs(x = "Probability level p", y = "TVaR_p") +
+  scale_color_manual(values = c("steelblue", "red", "red", "red")) +
+  theme(legend.title = element_blank()) + 
+  theme_minimal()
+
+stErrDeviation <- df %>%
+  select(MC2, CF2, MCError, pLevel) %>%
+  filter(MCError != 0) %>%
+  mutate(StdErrDev = (CF2 - MC2) / MCError)
+
+maxDev = max(abs(stErrDeviation$StdErrDev))
+
+ggplot(data = stErrDeviation, aes(x = pLevel)) +
+  geom_line(aes(y = StdErrDev)) + 
+  geom_abline(intercept = 1, slope = 0, linetype = "dashed") + 
+  geom_abline(intercept = -1, slope = 0, linetype = "dashed") +
+  ylim(-maxDev, maxDev) + 
+  geom_ribbon(aes(ymin=1, ymax=maxDev), fill="red", alpha=0.2) + 
+  geom_ribbon(aes(ymin=-maxDev, ymax=-1), fill="red", alpha=0.2)
+
+
+relativeError <- df %>%
+  select(MC2, CF2, pLevel) %>%
+  mutate(RelErr = ( MC2 - CF2) / MC2 * 100)  
+
+maxRelErr = max(abs(relativeError$RelErr))
+
+ggplot(data = relativeError, aes(x = pLevel)) +
+  geom_line(aes(y = RelErr)) +
+  geom_abline(intercept = 0, slope = 0, linetype = "dashed") +
+  ylim(-maxRelErr, maxRelErr) +
+  labs(
+    title = "Relative Error: Closed Form vs Monte Carlo",
+    x = "Probability Level p",
+    y = "Relative Error (%)"
+  ) +
+  theme_minimal()
+
+deelDf <- subset(df, pLevel >= 0.8)
+deelDf <- deelDf %>% select(pLevel, MC2, CF2)
+deelDf <- deelDf %>% rename(MonteCarlo = MC2, ClosedForm = CF2)
+
+grid.table(deelDf, rows = NULL)
+  
+
+differences <- df %>%
+  mutate(Difference = MC2 - CF2) %>%
+  mutate(DifferenceWhenCFExceeds = ifelse(Difference < 0, Difference, NA))
+
+differences <- subset(differences, pLevel != 0)
+
+ggplot(differences, aes(x = pLevel)) +
+  geom_abline(intercept = 0, slope = 0, linetype = "dashed", color = "black") +
+  geom_area(aes(y = DifferenceWhenCFExceeds), fill = "red", alpha = 0.2) + 
+  geom_line(aes(y = Difference), color = "blue") +
+  labs(title = "Difference between Closed Form and Monte Carlo VaR estimates", x = "Probability level p", y = "Difference (Closed Form - Monte Carlo)")
+
+ggplot(subset(df, MCTimeMax < 10000), aes(x = pLevel)) +
+  geom_ribbon(aes(ymin = MCTimeMin, ymax = MCTimeMax, fill = "Monte Carlo"), alpha = 0.2) +
+  geom_ribbon(aes(ymin = CFTimeMin, ymax = CFTimeMax, fill = "Closed form"), alpha = 0.2) +
+  geom_line(aes(y = MC2TimeAvg, colour = "Monte Carlo"), linewidth = 1) +
+  geom_line(aes(y = CF2TimeAvg, colour = "Closed form"), linewidth = 1) +
+  labs(title = "Computation time for Monte Carlo vs. Closed form (sample size 1e4)", x = "Probability level p", y = "Time (μs)") +
+  guides(fill = guide_legend(title = "Method"))
+
+
+merged_times <- df %>%
+  select(pLevel, MC2TimeAvg, CF2TimeAvg) %>%
+  pivot_longer(cols = c(MC2TimeAvg, CF2TimeAvg), names_to = "Method", values_to = "Time")
+
+ggplot(subset(merged_times, Time < 400), aes(x = Time, fill=Method)) +
+  geom_histogram(binwidth=4, alpha=0.9, position="identity") +
+  theme_minimal()
+
+# inspect correlation
+gridDF <- runAll(
+  trials = 50, 
+  n = 3, 
+  pValues = seq(0, 0.99, by = 0.01), 
+  microbenchmarkControl = list(warmup = 20, replications = 100),
+  inspectCorrelation = list(from = 0.5, to = 10, by = 0.15)
+)
+
+# by running a very large Monte Carlo simulation, we can get a very good
+# estimate of the true VaR for a given set of parameters, and then we can
+# compare the closed form estimate to that to see how well it performs for 
+# different ranges of σ
+σRangePlots <- list()
+n = 10
+μValues = runif(n, min = -2, max = 2)
+pValues = seq(0.01, 0.99, by = 0.1)
+
+rows = 2
+cols = 3
+σMin = 0.01
+σMax = 5
+diff = (σMax - σMin) / (rows * cols)
+
+for (σRangeMax in seq(σMin, σMax - diff, by = diff)) {
+  message(sprintf("Running for σ range max = %f", σRangeMax))
+  σValues = runif(n, min = σRangeMax, max = σRangeMax + diff)
+  
+  accurateMCResult <- runAll(
+    trials = 1e5, 
+    n = n, 
+    pValues = pValues, 
+    microbenchmarkControl = list(warmup = 0, replications = 0),
+    μGiven = μValues,
+    σGiven = σValues
+  )
+  
+  accurateMCResult <- select(accurateMCResult, pLevel, MC2)
+  
+  CFResult <- runAll(
+    trials = 1e4,
+    n = n,
+    pValues = pValues,
+    microbenchmarkControl = list(warmup = 0, replications = 0),
+    μGiven = μValues,
+    σGiven = σValues
+  )
+  
+  CFResult <- select(CFResult, pLevel, CF2)
+  
+  comparison <- merge(accurateMCResult, CFResult, by = "pLevel") %>%
+    mutate(σRangeMax = σRangeMax)
+  
+  plot <- ggplot(data = comparison, aes(x = pLevel)) + 
+    geom_line(aes(y = MC2, color = "Monte Carlo"), linewidth = 1) +
+    geom_line(aes(y = CF2, color = "Closed form"), linewidth = 1) + 
+    labs(title = sprintf("σ ∈ [%.2f, %.2f]", σRangeMax, σRangeMax + diff), y = NULL, x = NULL)
+  
+  σRangePlots[[length(σRangePlots) + 1]] <- plot
+}
+wrap_plots(σRangePlots, ncol = 4, guides = "collect") + 
+  plot_annotation(title = "Comparison of Monte Carlo and Closed Form VaR estimates for different σ ranges") &
+  theme(legend.position = "bottom", legend.title = element_blank())
+
+
+allResults <- data.frame()
+
+for (σRangeMax in seq(σMin, σMax - diff, by = diff)) {
+  message(sprintf("Running for σ range max = %f", σRangeMax))
+  σValues = runif(n, min = σMin, max = σRangeMax + diff)
+  
+  accurateMCResult <- runAll(
+    trials = 1e5, 
+    n = n, 
+    pValues = pValues, 
+    σRange = list(min = σMin, max = σRangeMax),
+    microbenchmarkControl = list(warmup = 0, replications = 0),
+    μGiven = μValues
+  ) %>% select(pLevel, MC2, CF2)
+  
+  comparison <- accurateMCResult %>%
+    mutate(
+      σRange = sprintf("σ ∈ [%.2f, %.2f]", σMin, σRangeMax + diff),
+      RelErr = (MC2 - CF2) / MC2 * 100
+    )
+  
+  allResults <- rbind(allResults, comparison)
+}
+
+
+
+ggplot(allResults, aes(x = pLevel, y = abs(RelErr), color = σRange)) +
+  geom_line(linewidth = 0.5) +
+  geom_abline(intercept = 0, slope = 0, linetype = "dashed", alpha = 0.8) +
+  labs(
+    x = "Probability Level (p)",
+    y = "Relative Error (%)",
+    color = "σ range"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+
+
+## Let's inspect the way β's affect the predictions
+
+βComparisonDf <- data.frame()
+
+R <- generateCorrelationMatrix(3)
+
+μ = runif(3, min = -1, max = 1)
+σ = runif(3, min =  0, max = 1)
+
+pValues <- seq(0.01, 0.99, by = 0.01)
+betas <- tibble(names= c("β1", "β2", "β3"), comp1 = c(5, 1, 1), comp2 = c(1, 5, 1), comp3 = c(1, 1, 5))
+
+gaussianCopula <- normalCopula(param = R[lower.tri(R)], dim = 3, dispstr = "un")
+
+multivariateDist <- mvdc(
+  copula = gaussianCopula,
+  margins = rep("lnorm", 3),
+  paramMargins = lapply(1:3, function(i) list(meanlog = μ[i], sdlog = σ[i]))
+)
+
+Y <- rMvdc(100, multivariateDist)
+
+for (i in 1:3) {
+  β = c(betas$comp1[i], betas$comp2[i], betas$comp3[i])
+  
+  {
+    # theoretical covariance between Yᵢ and Yⱼ:
+    tCov <- function(i, j) {
+      exp(μ[i] + μ[j] + 0.5 * (σ[i]^2 + σ[j]^2)) * (exp(R[i, j] * σ[i] * σ[j]) - 1)
+    }
+    
+    # Theoretical correlation between Y and Λ, making use of the fact that Cov is a bilinear form:
+    VarΛ = sum(sapply(1:3, function(i) {
+      sum(sapply(1:3, function(j) { β[i] * β[j] * tCov(i, j) }))
+    }))
+    
+    ρ = sapply(1:3, function(i) {
+      nom = sum(sapply(1:3, function(j) { β[j] * tCov(i, j) }))
+      den = sqrt(tCov(i, i) * VarΛ)
+      nom / den
+    })
+    
+    rm(tCov, VarΛ)
+  }
+  
+  # covariance size
+  euclNorm <- sqrt(sum(ρ^2))
+  message(sprintf("beta %s : cov %f", betas$names[i], euclNorm))
+  result <- data.frame()
+  for (p in pValues) {
+    TVaR_closedForm = sum(sapply(1:3, function (i) {
+      b = μ[i] + 0.5 * (1 - ρ[i]^2) * σ[i]^2
+      exp(b + (σ[i]^2 * ρ[i]^2) / 2)* pnorm(σ[i]* ρ[i] - qnorm(p))
+    })) / (1-p)
+    
+    result <- rbind(result, list(
+      pLevel = p, 
+      CF2 = TVaR_closedForm,
+      βName = betas$names[i]
+    ))
+    
+  }
+  
+  βComparisonDf <- rbind(βComparisonDf, result)
+}
+
+MCValues <- runAll(
+  trials = 1e5, 
+  n = 3, 
+  pValues = pValues, 
+  microbenchmarkControl = list(warmup = 0, replications = 0),
+  μGiven = μ,
+  σGiven = σ,
+  βGiven = β,
+  correlationMatrix = R
+) %>% select(pLevel, MC2)
+
+βComparisonDfMerged <- βComparisonDf %>%
+  pivot_wider(names_from = βName, values_from = c(CF2)) %>%
+  merge(MCValues, by = "pLevel") %>%
+  mutate(Δβ1 = (MC2 - β1)/MC2 * 100, Δβ2 = (MC2 - β2)/MC2 * 100, Δβ3 = (MC2 - β3)/MC2 *100) %>%
+  select(pLevel, MC2, Δβ1, Δβ2, Δβ3)
+
+
+βComparisonDfMerged %>%
+  pivot_longer(
+    cols = c(Δβ1, Δβ2, Δβ3),
+    names_to = "Beta",
+    values_to = "Difference"
+  ) %>%
+  ggplot(aes(x = pLevel, y = Difference, color = Beta, linetype = Beta)) +
+  geom_line() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black", alpha = 0.5) +
+  labs(
+    title = "MC vs Closed Form TVaR Difference by β",
+    x = "Probability Level p",
+    y = "Relarive error (%)",
+    color = expression(beta),
+    linetype = expression(beta)
+  ) +
+  theme_minimal()
+
+βComparisonDfMerged %>%
+  summarise(
+    β1 = sum(abs(Δβ1)),
+    β2 = sum(abs(Δβ2)),
+    β3 = sum(abs(Δβ3))
+  )
+
+
+# computation cost lower bound different dimensions. 
+
+runAll2 <- function(
+    n, 
+    correlationMatrix = NULL,
+    βGiven = NULL,
+    μRange = list(min = -1, max = 1),
+    σRange = list(min = 0, max = 1),
+    μGiven = NULL,
+    σGiven = NULL,
+    pValues = seq(0, 0.99, by = 0.01), 
+    microbenchmarkControl = list(warmup = 20, replications = 50)) {
+  message(sprintf("Running with %d dimensions", n))
+  
+  if (is.null(correlationMatrix)) {
+    R <- generateCorrelationMatrix(n)
+  } else {
+    R <- correlationMatrix
+  }
+  
+  gaussianCopula <- normalCopula(param = R[lower.tri(R)], dim = n, dispstr = "un")
+  
+  if (is.null(μGiven)) {
+    μ = runif(n, min = μRange$min, max = μRange$max)
+  } else {
+    μ = μGiven
+  }
+  
+  if (is.null(σGiven)) {
+    σ = runif(n, min = σRange$min, max = σRange$max)
+  } else {
+    σ = σGiven
+  }
+  
+  {
+    tCov <- function(i, j) {
+      exp(μ[i] + μ[j] + 0.5 * (σ[i]^2 + σ[j]^2)) * (exp(R[i, j] * σ[i] * σ[j]) - 1)
+    }
+    
+    VarΛ = sum(sapply(1:n, function(i) {
+      sum(sapply(1:n, function(j) { β[i] * β[j] * tCov(i, j) }))
+    }))
+    
+    ρ = sapply(1:n, function(i) {
+      nom = sum(sapply(1:n, function(j) { β[j] * tCov(i, j) }))
+      den = sqrt(tCov(i, i) * VarΛ)
+      nom / den
+    })
+    
+    rm(tCov, VarΛ)
+  }
+  
+  if (is.null(βGiven)) {
+    β <- runif(n, min = 1, max = 2)
+  } else {
+    β <- βGiven
+  }
+  
+  progress <- txtProgressBar(
+    min = min(pValues), 
+    max = max(pValues), 
+    initial = min(pValues), 
+    style = 3, 
+    char = "#")
+  
+  df <- data.frame()
+  
+  for (p in pValues) {
+    cf2 = microbenchmark(sum(sapply(1:n, function(i) {
+      b = μ[i] + 0.5 * (1 - ρ[i]^2) * σ[i]^2
+      exp(b + (σ[i]^2 * ρ[i]^2) / 2) * pnorm(σ[i] * ρ[i] - qnorm(p))
+    })) / (1-p), unit = "us", control = microbenchmarkControl)
+    
+    TVaR_closedForm = sum(sapply(1:n, function(i) {
+      b = μ[i] + 0.5 * (1 - ρ[i]^2) * σ[i]^2
+      exp(b + (σ[i]^2 * ρ[i]^2) / 2) * pnorm(σ[i] * ρ[i] - qnorm(p))
+    })) / (1-p)
+    
+    df <- rbind(df, list(
+      pLevel = p, 
+      CF2 = TVaR_closedForm,
+      CF2TimeAvg = summary(cf2)$mean,
+      CF2TimeMax = summary(cf2)$max
+    ))
+    
+    setTxtProgressBar(progress, p)
+  }
+  
+  message(sprintf("avg closed form time: %f μs", mean(df$CF2TimeAvg)))
+  
+  rm(list = ls() %>% setdiff(c("df")))
+  
+  df
+}
+
+nValues <- 2:50
+timingResults <- data.frame()
+
+for (n in nValues) {
+  result <- runAll2(
+    n = n,
+    pValues = pValues,
+    microbenchmarkControl = list(warmup = 20, replications = 100)
+  )
+  
+  timingResults <- rbind(timingResults, data.frame(
+    n = n,
+    avgTime = mean(result$CF2TimeAvg)
+  ))
+}
+
+ggplot(timingResults, aes(x = n, y = avgTime)) +
+  geom_line() +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 0.5) +
+  labs(x = "Dimension (n)",y = "Average Computation Time (μs)") +
+  theme_minimal()
+
+\end{lstlisting}
 
 \end{document}
