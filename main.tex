@@ -29,6 +29,7 @@
 
 \usepackage{fontspec}
 \setmonofont{Iosevka NF}
+%\setmonofont{IBM Plex Mono}
 
 \lstdefinestyle{mystyle}{
 	backgroundcolor=\color{backcolour},   
@@ -83,7 +84,7 @@
 \section*{Inleiding}
 Kwantitatieve risicoanalyse is een parapluterm voor een verscheidenheid aan technieken die gebruikt worden om potentiële verliezen te kwantificieren, voornamelijk in een actuariële of financiële context. Men kan zich een verzekeraar of bank inbeelden, die polissen afsluit of leningen aangaat, met daaraan geassocieerd een bepaald `risico' om een verlies te moeten incasseren: dit komt voor als de polishouder een schadeclaim indient, of als de lener de lening niet terug kan betalen. In het algemeen is een verzekeraar niet zozeer geïnteresseerd in individuele risico's, maar eerder in hun aggregaat, i.e. de som van alle individuele risico's voor alle polishouders. Het is immers precies dit totale risico dat bepaalt hoeveel reservekapitaal de verzekeraar moet bezitten, teneinde de verwachte claims terug te kunnen betalen (dit bedrag heet ook wel het \textit{technische reservekapitaal}).
 
-Als we $n$ klanten hebben, ieder met een geassocieerde stochastische variabele $X_i$ (met $i \in \{1, ..., n\}$) die het risico van die klant beduidt, noteren we het geaggregeerde risico met $S = \sum_{i=1}^n X_i$. Als we eigenschappen over $S$ willen afleiden, is het wiskundig gesproken het eenvoudigst als alle $X_i$'s onafhankelijk zijn. In de praktijk is dit zelden tot nooit het geval: als er bijvoorbeeld in een wijk een huisinbraak voorkomt, kan dit een goede indicatie zijn dat nabijgelegen huizen in die wijk in de nabije toekomst ook bestolen zullen worden. We willen die afhankelijkheidsstructuur tussen de verschillende risico's dus modelleren op een wiskundig haalbare manier. Teneinde zo'n modellering te bewerkstelligen, introduceren we een bepaalde klasse verdelingsfuncties, \textit{copulae} geheten.
+Als we $n$ klanten hebben, ieder met een geassocieerde stochastische variabele $X_i$ (waarbij \mbox{$i \in \{1, ..., n\}$}) die het risico van die klant beduidt, noteren we het geaggregeerde risico met \mbox{$S = \sum_{i=1}^n X_i$}. Als we eigenschappen over $S$ willen afleiden, is het wiskundig gesproken het eenvoudigst als alle $X_i$'s onafhankelijk zijn. In de praktijk is dit zelden tot nooit het geval: als er bijvoorbeeld in een wijk een huisinbraak voorkomt, kan dit een goede indicatie zijn dat nabijgelegen huizen in die wijk in de nabije toekomst ook bestolen zullen worden. We willen die afhankelijkheidsstructuur tussen de verschillende risico's dus modelleren op een wiskundig haalbare manier. Teneinde zo'n modellering te bewerkstelligen, introduceren we een bepaalde klasse verdelingsfuncties, \textit{copulae} geheten.
 
 In dit document zal onze focus liggen bij het specifieke geval waarbij de indiviuele risico's lognormaal verdeeld zijn (dat wil zeggen: de logaritmes van de risico's in kwestie zijn normaal verdeeld), en de copula tussen deze verliezen de zogeheten Gaussische copula is. Ons doel zal eruit bestaan een adequate benadering voor $S$ te vinden, als een gesloten uitdrukking. We zullen de rekentijden en accuraatheid van deze gesloten vorm dan vergelijken met die van de `primitievere' Monte Carlomethode.
 
@@ -102,7 +103,7 @@ Het klassieke raamwerk voor redeneringen over de rationaliteit van beslissingsth
 \section{Introduction}
 Quantitative risk measurement is an umbrella term for a variety of techniques used to quantify potential losses, often in an actuarial or financial context. One can imagine an insurer or a bank writing out premiums or loans, with a certain associated `risk' of incurring a loss: either the policyholder files a claim, or the lender cannot pay back their loan. An insurer is in general not interested in individual risks, but in their aggregate: indeed, it is the total risk that determines the necessary reserves the insurer needs to put aside, to pay out the claims that they expect to receive (the so-called \textit{technical reserves}).
 
-If we have $n$ clients, each with an associated random variable $X_i$ (for $i \in \{1, ..., n\}$) representing the risk of this client, the aggregate risk is denoted with $S = \sum_{i=1}^n X_i$. The mathematics for working out properties of $S$ is by far the easiest if all $X_i$'s are independent, but this is in practice rarely the case: for example, a burglary occurring in a neighbourhood can be a good indicator of other houses in the same neighbourhood being burgled in a short timespan after the first incident. As a result, we want to model the dependence structure between the different risks, in a way that is mathematically still feasible. To this end, we introduce a special class of distribution functions called \textit{copulae}.
+If we have $n$ clients, each with an associated random variable $X_i$ (for $i \in \{1, ..., n\}$) representing the risk of this client, the aggregate risk is denoted with $S = \sum_{i=1}^n X_i$. The mathematics for working out properties of $S$ is by far the easiest if all $X_i$'s are independent, but this is in practice rarely the case: for example, a burglary occurring in a neighbourhood can be a good indicator of other houses in the same neighbourhood being burgled in a short timespan after the first incident. As a result, we want to model the dependence structure between the different risks, in a way that is mathematically still feasible. To this end, we introduce a special class of distribution functions called \textit{copulas}.
 
 In this document, our focus will be on the specific case where our losses are distributed lognormally, and the copula between these losses is the so-called Gaussian copula. Our goal will be to find an adequate approximation for $S$, in a closed form expression. We will numerically compare the calculation speeds and accuracy of this closed form with the more ``primitive'' Monte Carlo method.
 
@@ -136,7 +137,7 @@ It is important to note that most of these results still hold for discrete rando
 \section{Risk measures}
 
 Risk measures are functions used for quantifying the risk inherent to a certain stochastic variable. One practical purpose of such quantification worth immediately highlighting here is to determine the minimum capital an insurance company is legally required to possess. For example, in the European Union, the Solvency II directive states that the ``solvency capital requirement [...] shall correspond to the Value-at-Risk of the basic own funds of an insurance or reinsurance undertaking subject to a confidence level of 99,5 \% over a one-year period'' \cite[Art. 101ter.]{SolvencyII}. This \textit{Value-at-Risk} is an example of a risk measure, which we define below.
-
+\\
 \begin{definition}\cite[Definition 6.2.1]{Risk_Measurement}
 A risk measure $\rho$ is a real functional on a set of real-valued random variables $\Gamma$ on some probability space $(\Omega, \mathcal{F}, \mathbb{P})$. 
 \end{definition}
@@ -150,7 +151,7 @@ This definition alone is much too general to derive useful results from; in prac
 A particular class of risk measures are the \textit{convex} risk measures. These are precisely those risk measures $\rho$ that are monotone (that is, $\forall \omega \in \Omega: X(\omega) \leq Y(\omega) \implies \rho[X] \leq \rho[Y]$), translation invariant ($\forall a \in \mathbb{R}, X \in \Gamma: \rho[X + a] = \rho[X] + a$) and convex ($\forall X, Y \in \Gamma, \lambda \in [0, 1]: \rho[\lambda X + (1-\lambda) Y] \leq \lambda \rho[X] + (1-\lambda)\rho[Y]$). A historically used set of extra requirements is that of positive homogeneity and subadditivity. A risk measure satisfying these requirements is called a \textit{coherent} risk measure. However, especially this latter requirement has been argued to be too strong a claim to make for reasonable use in financial mathematics, among others by Föllmer and Schied \cite{Follmer2002}. 
 
 Let us now look at some examples of risk measures that we will encounter later.
-
+\\
 \begin{definition}\cite[Definition 6.3.1]{Risk_Measurement}
     For a given random variable $X$, the \textit{Value-at-Risk} at probability level $p \in (0, 1)$ is defined as $$\text{VaR}_p[X] := \inf \left\{x \in \mathbb{R} \mid F_X(x) \geq p \right\} = F_X^{-1} (p).$$
 \end{definition}
@@ -163,36 +164,38 @@ Let us now look at some examples of risk measures that we will encounter later.
     For a given random variable $X$, the \textit{Expected Shortfall} at probability level $p \in (0, 1)$ is defined as $$\text{ES}_p[X] := \mathbb{E} \! \left[(X - F_X^{-1}(p))_+\right].$$
 \end{definition}
 
-One can show that the Expected Shortfall and the Tail Value-at-Risk are related as follows:
+One can prove that the Expected Shortfall and the Tail Value-at-Risk are related as follows:
 $$\text{TVaR}_p[X] = F_X^{-1}(p) + \frac{1}{1-p}\text{ES}_p[X]$$
 for $p\in (0,1)$.
 
-Intuitively, one can think of the value-at-risk as the quantity that answers the question ``What loss is exceeded with probability $1 - p$?'', whereas the Tail Value-at-Risk answers the question ``How bad is the situation once we indeed exceed that $1-p$ loss?'' This highlights one of the most often criticised weaknesses of the VaR: in a sense, it is not sensitive to tail behaviour. Two risks could have an identical chance of exceeding a certain loss, but one could have a much thicker tail, indicating that the latter is more disastrous in case of the loss being exceeded. 
+Intuitively, one can think of the Value-at-Risk as the quantity that answers the question ``What loss is exceeded with probability $1 - p$?'', whereas the Tail Value-at-Risk answers the question ``How bad is the situation once we indeed exceed that $1-p$ loss?'' This highlights one of the most often criticised weaknesses of the VaR: in a sense, it is not sensitive to tail behaviour. Two risks could have an identical chance of exceeding a certain loss, but one could have a much thicker tail, indicating that the latter is more disastrous in case of the loss being exceeded. 
 
 \section{Copulas}
 A copula is a multivariate cumulative distribution function for a random vector with uniform marginals which can be used to model the dependence structure between random variables. A two-dimensional copula is defined as follows.
+\\
 \begin{definition}\cite[Definition 3.4.1]{Risk_Measurement}
-    A two-dimensional copula $C: (0,1)^2 \rightarrow (0,1)$ is a joint cumulative distribution function of a two-dimensional random vector $(U_1,U_2)$ with uniform marginals $U_1$ and $U_2$:
+    A two-dimensional copula $C: (0,1)^2 \rightarrow (0,1)$ is a joint cumulative distribution function of a two-dimensional random vector $(U_1,U_2)$ with standard uniform marginals $U_1$ and $U_2$:
     $$C(u_1,u_2) = P[U_1 \leq u_1, U_2\leq u_2],$$
     for any $(u_1,u_2)\in (0,1)^2.$
 \end{definition}
 
 We can generalize this definition to higher dimensions.
 \begin{definition}\cite[Definition 1]{Copulas}
-    An $n$-dimensional copula, $C: (0,1)^n \rightarrow (0,1)$ is a joint cumulative distribution function with uniform marginals $(U_1,U_2,\dots,U_n)$:
+    An $n$-dimensional copula, $C: (0,1)^n \rightarrow (0,1)$ is a joint cumulative distribution function with standard uniform marginals $(U_1,U_2,\dots,U_n)$:
     $$C(u_1,u_2,\dots,u_n) = P[U_1\leq u_1, U_2\leq u_2,\dots, U_n \leq u_n],$$
     for every $(u_1,u_2,\dots,u_n)\in (0,1)^n$.
 \end{definition}
+
 \begin{lemma}\label{lemma: inverse cdf}
     If $X$ is a random variable with continuous cumulative distribution function $F$, then $F(X)$ is uniformly distributed over $(0,1)$. Additionally we have that $F^{-1}(U)$ follows the same distribution as $X$, thus $F^{-1}(U) \overset{d}{=} X$.
 \end{lemma}
 \begin{proof}
     Suppose that $p\in (0,1)$. By assumption $F: (a,b)\subseteq \mathbb{R} \rightarrow (0,1)$ is a bijection, thus let $x\in \mathbb{R}$ be an element such that $F(x) = P[X \leq x] = p$. Then it holds that $P[F(X) \leq p] = P[F(X) \leq F(x)] = P[X \leq F^{-1}(F(x))] = p$. Thus $F(X)\sim \text{Uniform}(0,1)$.\\\\
-    We are left to prove the second part of the lemma. Suppose that $a,b\in\mathbb{R}\cup\{\pm\infty\}$ such that $F: (a,b) \rightarrow(0,1)$ is a (strictly increasing) bijection. Let $x\in \mathbb{R}$. If $x\in (a,b)$ then
+    We are left to prove the second part of the lemma. Suppose that $a,b\in\mathbb{R}\cup\{\pm\infty\}$ such that $F: (a,b) \rightarrow(0,1)$ is a (strictly increasing) bijection\footnote{see Section \ref{section: assumptions}}. Let $x\in \mathbb{R}$. If $x\in (a,b)$ then
     $$F_{F^{-1}(U)}(x) = P(F^{-1}(U) \leq x) = P(U\leq F(x)) = F(x),$$
     since $F$ is strictly increasing on $(a,b)$ and $U$ is standard uniformly distributed. If $x \leq a$, then $F_{F^{-1}(U)}(x) = P(F^{-1}(U) \leq x) = 0 = F(x)$. If $x\geq b$, then $F_{F^{-1}(U)}(x) = P(F^{-1}(U) \leq x) = 1 = F(x)$. Hence we can conclude that $F^{-1}(U) \overset{d}{=} X$.
 \end{proof}
-\begin{theorem}[\textbf{Sklar's theorem}, part 1]\cite[Theorem 2]{Copulas}
+\begin{theorem}[\textbf{Sklar's theorem}, part 1]\cite[Theorem 2]{Copulas}\label{Sklar's theorem}
     Let $(X_1,X_2,\dots,X_n)$ be a random vector with cumulative distribution function $F$ and continuous univariate marginal distributions $F_1,F_2,\dots,F_n$ such that $F_i: (a_i,b_i) \rightarrow (0,1)$ is a bijection (see Section \ref{section: assumptions}). Then there exists a unique copula $C$ such that 
     $$F_{\underline{X}}(x_1,x_2,\dots,x_n) = C(F_1(x_1),F_2(x_2),\dots,F_n(x_n))$$
     for all $(x_1,x_2,\dots,x_n)\in (a_1,b_1)\times(a_2,b_2)\times \dots\times (a_n,b_n)$. This copula is given as
@@ -217,7 +220,7 @@ We can generalize this definition to higher dimensions.
     Thus $C$ is a joint cumulative distribution function with uniform marginals and thus indeed a copula.\\\\
     We are left to prove that this copula is unique. Suppose that $D$ is a second copula such that 
     $$F_{\underline{X}}(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n)) = D(F_1(x_1),\dots,F_n(x_n)).$$
-    We need to prove that $C(u_1,\dots,u_n) = D(u_1,\dots,u_n)$ for all $(u_1, \dots,u_n)\in (0,1)^n$. $F_i:(a_i,b_i)\rightarrow (0,1)$ is a bijection for every $i\in \{1,\dots,n\}$. Suppose $(u_1,\dots,u_n)\in (0,1)^n$, for every $u_i$ there exists an $x_i\in \mathbb{R}$ such that $F_i(x_i) = u_i$. This means that
+    We need to prove that $C(u_1,\dots,u_n) = D(u_1,\dots,u_n)$ for all $(u_1, \dots,u_n)\in (0,1)^n$. $F_i:(a_i,b_i)\rightarrow (0,1)$ is a bijection for every $i\in \{1,\dots,n\}$. Suppose $(u_1,\dots,u_n)\in (0,1)^n$. For every $u_i$ there exists an $x_i\in \mathbb{R}$ such that $F_i(x_i) = u_i$. This means that
     \begin{align*}
         C(u_1,\dots,u_n) &= C(F_1(x_1),\dots,F_n(x_n))\\
         &= D(F_1(x_1),\dots,F_n(x_n))\\
@@ -245,6 +248,7 @@ We can generalize this definition to higher dimensions.
 % simulaties -> som van lognormaal verdeelde risico's -> grafiekje
 
 Using this theorem, we see that given a random vector $(X_1,X_2,\dots,X_n)$ with marginal distribution functions $F_1,F_2,\dots,F_n$ a copula $C$ combines the marginal distributions to form a joint cumulative distribution function. Thus a copula captures the dependence structure of a random vector. If the dependence structure of a random vector is unknown, we can estimate a copula based on the data. By Theorem \ref{Sklar's theorem} we know that a copula is unique, but there are multiple possible copulas given a random vector and the relevant correlation matrix. To explore the impact of the choice of copula, it is useful to first look at a few commonly used copulas.
+\\
 \begin{definition}\cite[Example 3.4.4]{Risk_Measurement}
     Frank's copula with parameter $\alpha\neq 0$ is a two-dimensional copula and is defined as
     $$C_\alpha(u_1,u_2) = -\frac{1}{\alpha}\ln\left(1+\frac{\left(e^{-\alpha u_1} - 1\right)\left(e^{-\alpha u_2} - 1\right)}{e^{-\alpha} - 1}\right)$$
@@ -381,7 +385,7 @@ Suppose that $n  = 100$, the insurer takes on $100$ individual risks $X_1,X_2,\d
 
 We can now study the influence of the correlation coefficient on the Value-at-Risk and the Tail Value-at-Risk. Here we will still assume that Corr$(X_i,X_j) = \rho$ does not depend on $i,j\in \{1,\dots, n\}$  (and varies from 0 to 0.99) if $i\neq j$ and that $X_i\sim \text{Lognormal}(0,1)$ for every $i\in \{1,\dots,n\}$. Again, we take $n = 100$ and will use a sample size of $25000$. Figure \ref{fig:VaR} shows the calculated Value-at-Risk for the different correlation coefficients $\rho$ and Figure \ref{fig:TVaR} shows the calculated Tail Value-at-Risk for the different correlation coefficients $\rho$. The Monte Carlo experiment was repeated $50$ times: the coloured bands indicate the range of observed outcomes, the thin gray lines represent individual repetitions and the thick black line is the mean of all repetitions.
 
-The key takeaway here is that both the value-at-risk and tail value-at-risk are approximately linear in the correlation, and intuitively this makes a lot of sense: if there is a lot of dependence between the individual variables, the chance increases that they all ``fail together'', that is to say: the fact that the losses move in lock-step is precisely what it \textit{means} for the variables to be correlated.
+The key takeaway here is that both the Value-at-Risk and Tail Value-at-Risk are approximately linear in the correlation, and intuitively this makes a lot of sense: if there is a lot of dependence between the individual variables, the chance increases that they all ``fail together'', that is to say: the fact that the losses move in lock-step is precisely what it \textit{means} for the variables to be correlated.
 
 In attempting a more analytical approach to learning more about $S$, one quickly finds out a rather unfortunate fact: \textit{there is no closed formula for the distribution of a sum of lognormals}. This means that we will have to rely on approximations for this sum in order to say anything relevant about it. We will do this by searching for upper and lower bounds on $S$, so as to at least find a band in which the sum will certainly lie. The attentive reader will have noticed that there is a priori no single way to compare two random variables, and as such it is not well-defined to talk about bounds. In the next section, we will define several ways to define an ordering on random variables, and use such a system to bound the aggregate risk.
 
@@ -561,7 +565,7 @@ Suppose that $F_1,F_2,\dots, F_n$ are the marginal cumulative distribution funct
     holds for every $x$. We conclude that $F_{h(X)}^{-1}(p) = h(F_X^{-1}(p))$.
 \end{proof}
 \begin{proposition}\cite[Theorem 4.1.1]{Risk_Measurement}\label{prop: comonotonic vectors}
-    Let $X_1,X_2,\dots,X_n$ be random variables with cdfs $F_{X_1},F_{X_2},\dots,F_{X_n}$ such that $F_{X_i}:(a_i,b_i)\rightarrow (0,1)$ is bijective. Suppose $\underline{X} \overset{d}{=} (f_1(U),f_2(U),\dots,f_n(U))$ with $f_i: (0,1) \rightarrow (a_i,b_i)$ non-decreasing for every $i\in \{1,2,\dots,n\}$ and $U\sim \text{Uniform}(0,1)$. Then 
+    Let $X_1,X_2,\dots,X_n$ be random variables with cumulative distribution functions $F_{X_1},F_{X_2},\dots,F_{X_n}$ such that $F_{X_i}:(a_i,b_i)\rightarrow (0,1)$ is bijective. Suppose $\underline{X} \overset{d}{=} (f_1(U),f_2(U),\dots,f_n(U))$ with $f_i: (0,1) \rightarrow (a_i,b_i)$ non-decreasing for every $i\in \{1,2,\dots,n\}$ and $U\sim \text{Uniform}(0,1)$. Then 
     \begin{equation} \label{eq: comonotonic vector}
     \underline{X} \overset{d}{=} (F_{X_1}^{-1}(U),F_{X_2}^{-1}(U),\dots,F_{X_n}^{-1}(U)).
     \end{equation}
@@ -703,7 +707,7 @@ $$F^{-1}_{X_1|Z}(U) + F^{-1}_{X_2|Z}(U) + \dots + F^{-1}_{X_n|Z}(U) \preceq_{cx}
 
 \subsection{Lower bounds}\label{subsection: lower bounds}
 
-\begin{theorem}\cite[Theorem 1.6.1]{Risk_Measurement}
+\begin{theorem}[\textbf{Jensen's inequality}]\cite[Theorem 1.6.1]{Risk_Measurement}
     If $X$ is a random variable and $f$ a convex function, then
     $$\mathbb{E}[f(X)]\geq f(\mathbb{E}[X]).$$
 \end{theorem}
@@ -789,7 +793,7 @@ Thus we find
     &= \exp\left\{\mathbb{E}[Y_i|\Lambda = \lambda] + \frac{1}{2}\text{Var}(Y_i|\Lambda = \lambda)\right\}\\
     &= \exp\left\{\mu_i + \sigma_i\rho_i\frac{\lambda - \mathbb{E}[\Lambda]}{\sigma_\Lambda} + \frac{1}{2}(1-\rho_i^2)\sigma_i^2\right\}.
 \end{align*}
-Define $b_i:= \mu_i + \frac{1}{2}(1-\rho_i^2)\sigma_i^2$, this is a constant factor. Since $\Lambda$ is normally distributed, we have that $\frac{\Lambda-\mathbb{E}[\Lambda]}{\sigma_\Lambda}$ follows a standard normal distribution. Thus if $U\sim \text{Uniform}(0,1)$ we have
+Define $b_i:= \mu_i + \frac{1}{2}(1-\rho_i^2)\sigma_i^2\quad \forall i$ , this is a constant factor. Since $\Lambda$ is normally distributed, we have that $\frac{\Lambda-\mathbb{E}[\Lambda]}{\sigma_\Lambda}$ follows a standard normal distribution. Thus if $U\sim \text{Uniform}(0,1)$ we have
 $$\mathbb{E}[X_i\mid \Lambda] = \exp\left\{b_i+ \sigma_i\rho_i\Phi^{-1}(U)\right\}.$$
 Notice that this means that $\mathbb{E}[X_i\mid \Lambda]$ is again lognormally distributed (albeit with different parameters).
 Hence 
@@ -800,7 +804,7 @@ Suppose $u\in (0,1)$. Define
 $$f_i(u) := e^{b_i + \sigma_i \rho_i\Phi^{-1}(u)}$$
 for every $i\in \{1,2,\dots,n\}$ and
 \begin{equation}\label{formula cdf S^l}
-    $$f(u) := \sum_{i=1}^nf_i(u) = \sum_{i=1}^ne^{b_i + \sigma_i \rho_i\Phi^{-1}(u)}.$$
+    f(u) := \sum_{i=1}^nf_i(u) = \sum_{i=1}^ne^{b_i + \sigma_i \rho_i\Phi^{-1}(u)}.
 \end{equation}
 Then we can write $S^l = f(U)$ for $U\sim \text{Uniform}(0,1)$. We have not yet made any assumptions about $\beta_1,\beta_2,\dots,\beta_n$, which limits what we can say about the general behaviour of $f$. If $f$ is strictly increasing, the Value-at-Risk, the Tail Value-at-Risk and the stop-loss premiums of $S^l$ can be expressed in closed form. Notice that this is the case if we assume that $\rho_i > 0$ for every $i$. Since
 \begin{align*}
@@ -1084,7 +1088,7 @@ ggplot(df, aes(x, y, color = Copula)) +
   labs(color = "Copula type") +
   theme(legend.title = element_text(size = 14), legend.text = element_text(size = 12))
 
-## Aggregate loss with different copula's 
+## Aggregate loss with different copulas 
 
 n  <- 10000
 m <- 100
