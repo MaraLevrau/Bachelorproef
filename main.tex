@@ -431,9 +431,9 @@ Convex order is an interesting concept to consider. In the expected utility fram
     \begin{align*}
     xf'(x) + \int_x^af''(K)\;K\;dK &= \int_x^af''(K)(K-x)dK\\
     &= \int_{\inf I}^af''(K)\;(K-x)_+dK\\
-    &= \int_{\inf I}^af''(K)\;(K-x)_+dK + \int^{\sup I}_af''(K)\;(x-K)_+dK.
+    &= \int_{\inf I}^af''(K)\;(K-x)_+dK + \int^{\sup I}_af''(K)\;(x-K)_+dK,
     \end{align*}
-    Where we used that $(x-K)_+ = 0$ for $K \in (a, \sup I)$. We have proven that \eqref{vgl: integral representation} holds for every $x\in \mathbb{R}$. By replacing $x$ with the random variable $X$ we have
+    where we used that $(x-K)_+ = 0$ for $K \in (a, \sup I)$. We have proven that \eqref{vgl: integral representation} holds for every $x\in \mathbb{R}$. By replacing $x$ with the random variable $X$ we have
     \begin{equation}
         f(X) = f(a) + f'(a)(X-a) + \int_{\inf I}^af''(K)\;(K-X)_+dK + \int^{\sup I}_af''(K)\;(X-K)_+dK.
     \end{equation}
@@ -799,7 +799,9 @@ is a sum of lognormally distributed random variables.
 Suppose $u\in (0,1)$. Define
 $$f_i(u) := e^{b_i + \sigma_i \rho_i\Phi^{-1}(u)}$$
 for every $i\in \{1,2,\dots,n\}$ and
-$$f(u) := \sum_{i=1}^nf_i(u) = \sum_{i=1}^ne^{b_i + \sigma_i \rho_i\Phi^{-1}(u)}.$$
+\begin{equation}\label{formula cdf S^l}
+    $$f(u) := \sum_{i=1}^nf_i(u) = \sum_{i=1}^ne^{b_i + \sigma_i \rho_i\Phi^{-1}(u)}.$$
+\end{equation}
 Then we can write $S^l = f(U)$ for $U\sim \text{Uniform}(0,1)$. We have not yet made any assumptions about $\beta_1,\beta_2,\dots,\beta_n$, which limits what we can say about the general behaviour of $f$. If $f$ is strictly increasing, the Value-at-Risk, the Tail Value-at-Risk and the stop-loss premiums of $S^l$ can be expressed in closed form. Notice that this is the case if we assume that $\rho_i > 0$ for every $i$. Since
 \begin{align*}
 \rho_i &= \Corr(Y_i,\Lambda)
@@ -976,7 +978,7 @@ The closed-form estimation seems to be more efficient than the Monte Carlo estim
 \end{figure}
 
 \subsection{Conclusion}
-In this section we have combined the theory of the previous sections to get a general idea of the behaviour of the lower bound $S^l$ for $S$. We started from lognormal distributed risks $X_i$ for $i\in \{1,2,\dots,n\}$ with a Gaussian copula. We compared two methods to estimate the Tail Value-at-Risk of $S = \sum_{i=1}^n$: the Monte Carlo estimation and the closed-form of the lower bound $S^l$ as calculated in Subsection \ref{subsection: generic results} in Section \ref{section: upper and lower bounds}. 
+In this section we have combined the theory of the previous sections to get a general idea of the behaviour of the lower bound $S^l$ for $S$. We started from lognormal distributed risks $X_i$ for $i\in \{1,2,\dots,n\}$ with a Gaussian copula. We compared two methods to estimate the Tail Value-at-Risk of $S = \sum_{i=1}^n X_i$: the Monte Carlo estimation and the closed-form of the lower bound $S^l$ as calculated in Subsection \ref{subsection: generic results} in Section \ref{section: upper and lower bounds}. 
 
 For large sample sizes we may assume that the Monte Carlo estimation is an accurate approximation of the true value of the TVaR, but this comes with expensive computational costs since the computation time increases linearly with the sample size. The calculations of the closed-form expressions of the lower bound of the TVaR are a lot cheaper in computation time, these only depend on the amount of individual risks $n$. 
 
