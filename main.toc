@@ -1,0 +1,23 @@
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}General context}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Expected utility theory}{5}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Assumptions}{5}{section.2}%
+\contentsline {section}{\numberline {3}Risk measures}{5}{section.3}%
+\contentsline {section}{\numberline {4}Copulas}{6}{section.4}%
+\contentsline {section}{\numberline {5}Aggregate risk of lognormal variables under a Gaussian copula model}{10}{section.5}%
+\contentsline {section}{\numberline {6}Ordering of random variables}{11}{section.6}%
+\contentsline {section}{\numberline {7}Upper and lower bounds for the aggregate risk}{15}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Upper bounds}{16}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Lower bounds}{20}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Generic results}{21}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Dependence structure}{21}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Closed-form expression of $S^l$}{22}{subsubsection.7.3.2}%
+\contentsline {subsubsection}{\numberline {7.3.3}Value-at-Risk}{23}{subsubsection.7.3.3}%
+\contentsline {subsubsection}{\numberline {7.3.4}Tail Value-at-Risk}{23}{subsubsection.7.3.4}%
+\contentsline {subsubsection}{\numberline {7.3.5}Stop-loss premium}{25}{subsubsection.7.3.5}%
+\contentsline {section}{\numberline {8}Numerical simulation}{25}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Monte Carlo method}{26}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Closed-form method}{26}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Comparison of execution time and accuracy in function of sample size}{27}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Conclusion}{29}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Conclusion}{32}{section.9}%

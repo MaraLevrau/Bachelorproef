@@ -18,33 +18,29 @@
 
 
 \refsection{0}
-  \datalist[entry]{nyt/global//global/global/global}
+  \datalist[entry]{nty/global//global/global/global}
     \entry{cheung-2013}{article}{}{}
       \name{author}{4}{}{%
-        {{un=0,uniquepart=base,hash=15602977e193d9042be679f8a580e6f2}{%
+        {{hash=15602977e193d9042be679f8a580e6f2}{%
            family={Cheung},
            familyi={C\bibinitperiod},
            given={Ka\bibnamedelima Chun},
-           giveni={K\bibinitperiod\bibinitdelim C\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=1991e6315a983b38398614a23e1ddaa4}{%
+           giveni={K\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=1991e6315a983b38398614a23e1ddaa4}{%
            family={Dhaene},
            familyi={D\bibinitperiod},
            given={Jan},
-           giveni={J\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=24556470efbe4d95b4f44994b59b89da}{%
+           giveni={J\bibinitperiod}}}%
+        {{hash=24556470efbe4d95b4f44994b59b89da}{%
            family={Kukush},
            familyi={K\bibinitperiod},
            given={Alexander},
-           giveni={A\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=177b748cb3b5683b7e9fdab0b16adfbb}{%
+           giveni={A\bibinitperiod}}}%
+        {{hash=177b748cb3b5683b7e9fdab0b16adfbb}{%
            family={Linders},
            familyi={L\bibinitperiod},
            given={Daniël},
-           giveni={D\bibinitperiod},
-           givenun=0}}%
+           giveni={D\bibinitperiod}}}%
       }
       \strng{namehash}{f612793d9f1ad0daa424afde6a494bcc}
       \strng{fullhash}{8f783e4b2a49f5df9d849865e99a1284}
@@ -56,8 +52,6 @@
       \strng{authorfullhashraw}{8f783e4b2a49f5df9d849865e99a1284}
       \field{sortinit}{C}
       \field{sortinithash}{4d103a86280481745c9c897c925753c0}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Scandinavian Actuarial Journal}
@@ -80,30 +74,26 @@
     \endentry
     \entry{Risk_Measurement}{book}{}{}
       \name{author}{4}{}{%
-        {{un=2,uniquepart=given,hash=1991e6315a983b38398614a23e1ddaa4}{%
+        {{hash=1991e6315a983b38398614a23e1ddaa4}{%
            family={Dhaene},
            familyi={D\bibinitperiod},
            given={Jan},
-           giveni={J\bibinitperiod},
-           givenun=2}}%
-        {{un=0,uniquepart=base,hash=177b748cb3b5683b7e9fdab0b16adfbb}{%
+           giveni={J\bibinitperiod}}}%
+        {{hash=177b748cb3b5683b7e9fdab0b16adfbb}{%
            family={Linders},
            familyi={L\bibinitperiod},
            given={Daniël},
-           giveni={D\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=d8783426f9845c7d6fa99b9b18afd050}{%
+           giveni={D\bibinitperiod}}}%
+        {{hash=d8783426f9845c7d6fa99b9b18afd050}{%
            family={Verdonck},
            familyi={V\bibinitperiod},
            given={Tim},
-           giveni={T\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=6d52ef070db46edec5572f25ad5fb0ee}{%
+           giveni={T\bibinitperiod}}}%
+        {{hash=6d52ef070db46edec5572f25ad5fb0ee}{%
            family={Denuit},
            familyi={D\bibinitperiod},
            given={Michel},
-           giveni={M\bibinitperiod},
-           givenun=0}}%
+           giveni={M\bibinitperiod}}}%
       }
       \list{publisher}{1}{%
         {KU Leuven}%
@@ -118,8 +108,6 @@
       \strng{authorfullhashraw}{2d9026eee631255b833dd061bbc490d2}
       \field{sortinit}{D}
       \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Foundations of Quantitative Risk Measurement}
@@ -127,18 +115,16 @@
     \endentry
     \entry{Donnelly_Embrechts_2010}{article}{}{}
       \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=8b9c3c96134a19a0e6478cd1ca66ba34}{%
+        {{hash=8b9c3c96134a19a0e6478cd1ca66ba34}{%
            family={Donnelly},
            familyi={D\bibinitperiod},
            given={Catherine},
-           giveni={C\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=1cb1372ef5a179bf72e7bc72d0a9c941}{%
+           giveni={C\bibinitperiod}}}%
+        {{hash=1cb1372ef5a179bf72e7bc72d0a9c941}{%
            family={Embrechts},
            familyi={E\bibinitperiod},
            given={Paul},
-           giveni={P\bibinitperiod},
-           givenun=0}}%
+           giveni={P\bibinitperiod}}}%
       }
       \strng{namehash}{1a7bfb8840408bdf51ccb3a00dccdb8b}
       \strng{fullhash}{1a7bfb8840408bdf51ccb3a00dccdb8b}
@@ -150,8 +136,6 @@
       \strng{authorfullhashraw}{1a7bfb8840408bdf51ccb3a00dccdb8b}
       \field{sortinit}{D}
       \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{ASTIN Bulletin}
@@ -167,15 +151,13 @@
     \endentry
     \entry{SolvencyII}{article}{}{}
       \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=f4dfa52e1b1583cf31ef55fa2a92580f}{%
+        {{hash=f4dfa52e1b1583cf31ef55fa2a92580f}{%
            family={European\bibnamedelima Union},
            familyi={E\bibinitperiod\bibinitdelim U\bibinitperiod},
            given={Council},
            giveni={C\bibinitperiod},
-           givenun=0,
            prefix={of\bibnamedelima the},
-           prefixi={o\bibinitperiod\bibinitdelim t\bibinitperiod},
-           prefixun=0}}%
+           prefixi={o\bibinitperiod\bibinitdelim t\bibinitperiod}}}%
       }
       \strng{namehash}{f4dfa52e1b1583cf31ef55fa2a92580f}
       \strng{fullhash}{f4dfa52e1b1583cf31ef55fa2a92580f}
@@ -187,8 +169,6 @@
       \strng{authorfullhashraw}{f4dfa52e1b1583cf31ef55fa2a92580f}
       \field{sortinit}{E}
       \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Official Journal of the European Union}
@@ -204,18 +184,16 @@
     \endentry
     \entry{Follmer2002}{article}{}{}
       \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=0c7afbc5410054170dbed41d05baca56}{%
+        {{hash=0c7afbc5410054170dbed41d05baca56}{%
            family={Föllmer},
            familyi={F\bibinitperiod},
            given={Hans},
-           giveni={H\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=1f6c583833ee16c8fddcf5319a341e74}{%
+           giveni={H\bibinitperiod}}}%
+        {{hash=1f6c583833ee16c8fddcf5319a341e74}{%
            family={Schied},
            familyi={S\bibinitperiod},
            given={Alexander},
-           giveni={A\bibinitperiod},
-           givenun=0}}%
+           giveni={A\bibinitperiod}}}%
       }
       \list{publisher}{2}{%
         {Springer Science}%
@@ -231,8 +209,6 @@
       \strng{authorfullhashraw}{81ddf1f85ae72234c089ade593394068}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0949-2984}
@@ -256,12 +232,11 @@
     \endentry
     \entry{Copulas}{misc}{}{}
       \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=1e8e6cf66177c92805d3486c72482ca6}{%
+        {{hash=1e8e6cf66177c92805d3486c72482ca6}{%
            family={Haugh},
            familyi={H\bibinitperiod},
            given={Martin},
-           giveni={M\bibinitperiod},
-           givenun=0}}%
+           giveni={M\bibinitperiod}}}%
       }
       \strng{namehash}{1e8e6cf66177c92805d3486c72482ca6}
       \strng{fullhash}{1e8e6cf66177c92805d3486c72482ca6}
@@ -273,8 +248,6 @@
       \strng{authorfullhashraw}{1e8e6cf66177c92805d3486c72482ca6}
       \field{sortinit}{H}
       \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{An Introduction to Copulas}
@@ -282,24 +255,21 @@
     \endentry
     \entry{kaas-2000}{article}{}{}
       \name{author}{3}{}{%
-        {{un=0,uniquepart=base,hash=cf387329c98112c13057a3186fe04e4b}{%
+        {{hash=cf387329c98112c13057a3186fe04e4b}{%
            family={Kaas},
            familyi={K\bibinitperiod},
            given={R.},
-           giveni={R\bibinitperiod},
-           givenun=0}}%
-        {{un=2,uniquepart=given,hash=1b844046269cff643a5470b902e780b9}{%
+           giveni={R\bibinitperiod}}}%
+        {{hash=1b844046269cff643a5470b902e780b9}{%
            family={Dhaene},
            familyi={D\bibinitperiod},
            given={J.L.M.},
-           giveni={J\bibinitperiod},
-           givenun=2}}%
-        {{un=0,uniquepart=base,hash=d403ce63156567570a7f4982baa5046b}{%
+           giveni={J\bibinitperiod}}}%
+        {{hash=d403ce63156567570a7f4982baa5046b}{%
            family={Goovaerts},
            familyi={G\bibinitperiod},
            given={M.J.},
-           giveni={M\bibinitperiod},
-           givenun=0}}%
+           giveni={M\bibinitperiod}}}%
       }
       \strng{namehash}{7e39fe303dda4ab09c088e071445baaa}
       \strng{fullhash}{7e39fe303dda4ab09c088e071445baaa}
@@ -311,8 +281,6 @@
       \strng{authorfullhashraw}{7e39fe303dda4ab09c088e071445baaa}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{UvA-DARE (University of Amsterdam)}
@@ -331,27 +299,23 @@
     \endentry
     \entry{theoryOfGamesAndEconomicBehavior}{book}{}{}
       \name{author}{3}{}{%
-        {{un=0,uniquepart=base,hash=f8744afb2b8eb53c5804cbac615dbad1}{%
+        {{hash=f8744afb2b8eb53c5804cbac615dbad1}{%
            family={Neumann},
            familyi={N\bibinitperiod},
            given={John},
            giveni={J\bibinitperiod},
-           givenun=0,
            prefix={von},
-           prefixi={v\bibinitperiod},
-           prefixun=0}}%
-        {{un=0,uniquepart=base,hash=9a5e5068a8192ce97865c96f1dc9be3b}{%
+           prefixi={v\bibinitperiod}}}%
+        {{hash=9a5e5068a8192ce97865c96f1dc9be3b}{%
            family={Morgenstern},
            familyi={M\bibinitperiod},
            given={Oskar},
-           giveni={O\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=6dd390184a4a0f79f72fd43d5772433b}{%
+           giveni={O\bibinitperiod}}}%
+        {{hash=6dd390184a4a0f79f72fd43d5772433b}{%
            family={Rubinstein},
            familyi={R\bibinitperiod},
            given={Ariel},
-           giveni={A\bibinitperiod},
-           givenun=0}}%
+           giveni={A\bibinitperiod}}}%
       }
       \list{publisher}{1}{%
         {Princeton University Press}%
@@ -366,8 +330,6 @@
       \strng{authorfullhashraw}{55966d81a7dd9fca7fa8b808c524a99c}
       \field{sortinit}{N}
       \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{This is the classic work upon which modern-day game theory is based. What began more than sixty years ago as a modest proposal that a mathematician and an economist write a short paper together blossomed, in 1944, when Princeton University Press published Theory of Games and Economic Behavior. In it, John von Neumann and Oskar Morgenstern conceived a groundbreaking mathematical theory of economic and social organization, based on a theory of games of strategy. Not only would this revolutionize economics, but the entirely new field of scientific inquiry it yielded--game theory--has since been widely used to analyze a host of real-world phenomena from arms races to optimal policy choices of presidential candidates, from vaccination policy to major league baseball salary negotiations. And it is today established throughout both the social sciences and a wide range of other sciences. This sixtieth anniversary edition includes not only the original text but also an introduction by Harold Kuhn, an afterword by Ariel Rubinstein, and reviews and articles on the book that appeared at the time of its original publication in the New York Times, tthe American Economic Review, and a variety of other publications. Together, these writings provide readers a matchless opportunity to more fully appreciate a work whose influence will yet resound for generations to come.}
@@ -387,18 +349,16 @@
     \endentry
     \entry{rencher-2007}{book}{}{}
       \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=67e3a4b81bdc0419963f493654cb5bc7}{%
+        {{hash=67e3a4b81bdc0419963f493654cb5bc7}{%
            family={Rencher},
            familyi={R\bibinitperiod},
            given={Alvin\bibnamedelima C.},
-           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=b13d353211976408dd63543c78de7e42}{%
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=b13d353211976408dd63543c78de7e42}{%
            family={Schaalje},
            familyi={S\bibinitperiod},
            given={G.\bibnamedelimi Bruce},
-           giveni={G\bibinitperiod\bibinitdelim B\bibinitperiod},
-           givenun=0}}%
+           giveni={G\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
       }
       \strng{namehash}{fc004a97c21adebe39252fa234f7b0db}
       \strng{fullhash}{fc004a97c21adebe39252fa234f7b0db}
@@ -410,8 +370,6 @@
       \strng{authorfullhashraw}{fc004a97c21adebe39252fa234f7b0db}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{month}{4}
@@ -429,18 +387,16 @@
     \endentry
     \entry{shaked-2007}{book}{}{}
       \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=17c57a49513767c75b7210ba85f87729}{%
+        {{hash=17c57a49513767c75b7210ba85f87729}{%
            family={Shaked},
            familyi={S\bibinitperiod},
            given={Moshe},
-           giveni={M\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=8a97ccc79d51ea1a023b155debc58ea6}{%
+           giveni={M\bibinitperiod}}}%
+        {{hash=8a97ccc79d51ea1a023b155debc58ea6}{%
            family={Shanthikumar},
            familyi={S\bibinitperiod},
            given={J.\bibnamedelimi George},
-           giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod},
-           givenun=0}}%
+           giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
       }
       \strng{namehash}{e1986c6638d7dd8aa01d980839446f87}
       \strng{fullhash}{e1986c6638d7dd8aa01d980839446f87}
@@ -452,8 +408,6 @@
       \strng{authorfullhashraw}{e1986c6638d7dd8aa01d980839446f87}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{month}{1}

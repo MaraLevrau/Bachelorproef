@@ -73,13 +73,20 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{8pt}
 
+\usepackage{ifthen}
+\newboolean{anonymize}
+\setboolean{anonymize}{false}
+
 \title{Quantitative Risk Measurement}
 \author{Simeon Duwel, Mara Levrau}
 \date{March 2026}
 
 \begin{document}
 
-\maketitle
+\input{title}
+\newpage
+\tableofcontents
+\newpage
 
 \section*{Inleiding}
 Kwantitatieve risicoanalyse is een parapluterm voor een verscheidenheid aan technieken die gebruikt worden om potentiële verliezen te kwantificieren, voornamelijk in een actuariële of financiële context. Men kan zich een verzekeraar of bank inbeelden, die polissen afsluit of leningen aangaat, met daaraan geassocieerd een bepaald `risico' om een verlies te moeten incasseren: dit komt voor als de polishouder een schadeclaim indient, of als de lener de lening niet terug kan betalen. In het algemeen is een verzekeraar niet zozeer geïnteresseerd in individuele risico's, maar eerder in hun aggregaat, i.e. de som van alle individuele risico's voor alle polishouders. Het is immers precies dit totale risico dat bepaalt hoeveel claims de verzekeraar verwacht te krijgen en dus reservekapitaal de verzekeraar moet bezitten, teneinde die claims (waarschijnlijk) terug te kunnen betalen (dit bedrag heet ook wel het \textit{technische reservekapitaal}).
